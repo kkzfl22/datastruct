@@ -1,7 +1,7 @@
 package com.liujun.datastruct.linkedlist;
 
 /**
- * 自己实现一个简单的链表功能,即现为一个int的链表
+ * 自己实现一个简单的链表功能,即现为一个String的链表
  *
  * <p>，链表的插入
  *
@@ -13,16 +13,20 @@ package com.liujun.datastruct.linkedlist;
  * @version 0.0.1
  * @date 2018/10/11
  */
-public class MyLinkedList {
+public class MyLinkedListStr {
 
   /** 链表的节点信息 */
   class Node {
-    private Integer value;
+    private String value;
 
     private Node next;
 
-    public Node(Integer value) {
+    public Node(String value) {
       this.value = value;
+    }
+
+    public String getValue() {
+      return value;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class MyLinkedList {
    *
    * @param value
    */
-  public void add(int value) {
+  public void add(String value) {
     Node node = new Node(value);
 
     Node headNodeAdd = headNode;
@@ -61,7 +65,7 @@ public class MyLinkedList {
    * @param value 传递的值信息
    * @return 节点信息
    */
-  public Node findByValue(int value) {
+  public Node findByValue(String value) {
     Node temNode = headNode.next;
 
     while (temNode != null) {
@@ -85,7 +89,6 @@ public class MyLinkedList {
     if (index < 0) {
       return null;
     }
-
     Node temp = headNode.next;
 
     int tmpIndex = 0;
@@ -98,7 +101,7 @@ public class MyLinkedList {
     return temp;
   }
 
-  public void insertToHead(int value) {
+  public void insertToHead(String value) {
 
     Node insNode = new Node(value);
 
@@ -124,7 +127,7 @@ public class MyLinkedList {
    * @param after 指定的节点信息
    * @param value 指定的节点值
    */
-  public void insertToAfter(Node after, int value) {
+  public void insertToAfter(Node after, String value) {
     Node newValue = new Node(value);
     this.insertToAfter(after, newValue);
   }
@@ -146,7 +149,7 @@ public class MyLinkedList {
    * @param before 指定的前节点
    * @param value 需要插入的值
    */
-  public void insertToBefore(Node before, int value) {
+  public void insertToBefore(Node before, String value) {
     Node node = new Node(value);
     this.insertToBefore(before, node);
   }
@@ -174,7 +177,7 @@ public class MyLinkedList {
    *
    * @return
    */
-  public Integer removeLast() {
+  public String removeLast() {
 
     // 1,移除尾节点，需要从头节点开始遍历找到尾节点
     Node lastNode = headNode;
@@ -190,7 +193,7 @@ public class MyLinkedList {
     }
 
     if (headNode != lastNode) {
-      int value = lastNode.value;
+      String value = lastNode.value;
 
       lastNodeTop.next = null;
 
@@ -200,7 +203,7 @@ public class MyLinkedList {
     return null;
   }
 
-  public void deleteByValue(int value) {
+  public void deleteByValue(String value) {
 
     Node tempNode = headNode;
 
@@ -229,7 +232,7 @@ public class MyLinkedList {
     }
   }
 
-  public void printTree(Node node, int index) {
+  public void prStringTree(Node node, int index) {
 
     Node tempNode = null;
 
@@ -250,7 +253,7 @@ public class MyLinkedList {
     }
 
     if (null != tempNode.next) {
-      printTree(tempNode.next, index + 1);
+      prStringTree(tempNode.next, index + 1);
     }
   }
 }

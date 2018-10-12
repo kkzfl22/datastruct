@@ -30,7 +30,6 @@ public class MyLinkedListTest {
 
     Integer value = list.removeLast();
     System.out.println(value);
-    System.out.println("2");
 
     value = list.removeLast();
     System.out.println(value);
@@ -105,5 +104,54 @@ public class MyLinkedListTest {
     list.insertToAfter(node, 22);
 
     System.out.println(list);
+  }
+
+  @Test
+  public void testInsertToBeforeValue() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+
+    MyLinkedList.Node beforeNode = list.findByIndex(1);
+
+    list.insertToBefore(beforeNode, 15);
+  }
+
+
+  @Test
+  public void testdeleteByValue()
+  {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(50);
+
+    list.deleteByValue(20);
+
+    list.deleteByValue(40);
+  }
+
+
+  @Test
+  public void testdeleteByPrint()
+  {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(50);
+    list.add(60);
+
+    list.printTree(null,0);
+
+    list.deleteByValue(20);
+
+    list.deleteByValue(40);
+
+    list.printTree(null,0);
   }
 }
