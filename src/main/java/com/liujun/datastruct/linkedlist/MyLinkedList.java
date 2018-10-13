@@ -1,5 +1,7 @@
 package com.liujun.datastruct.linkedlist;
 
+import java.util.HashMap;
+
 /**
  * 自己实现一个简单的链表功能,即现为一个int的链表
  *
@@ -227,6 +229,76 @@ public class MyLinkedList {
       // 将值的上一级节点，修改为删除值的下一级节点
       tempNodeTop.next = tempNode.next;
     }
+  }
+
+  public void reverse() {
+    Node head = null, current = headNode.next, currNext = null;
+
+    while (current != null) {
+      currNext = current.next;
+
+      current.next = head;
+      head = current;
+      current = currNext;
+    }
+
+    headNode.next = head;
+  }
+
+  public void setCircle() {
+    Node tempLoad = headNode.next;
+
+    while (tempLoad.next != null) {
+      tempLoad = tempLoad.next;
+    }
+
+    // 设置环
+    tempLoad.next = headNode;
+  }
+
+  /**
+   * 检查环
+   *
+   * @return true 存在环，false 不存在环
+   */
+  public boolean checkCircle() {
+    Node first = headNode.next.next;
+    Node slow = headNode.next;
+
+    while (first != null && first.next != null) {
+      first = first.next.next;
+      slow = slow.next;
+
+      if (first == slow) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * 单链表反转
+   *
+   * @param list
+   * @return
+   */
+  public static Node reverse(Node list) {
+    Node headNode = null;
+
+    Node previousNode = null;
+    Node currentNode = list;
+    while (currentNode != null) {
+      Node nextNode = currentNode.next;
+      if (nextNode == null) {
+        headNode = currentNode;
+      }
+      currentNode.next = previousNode;
+      previousNode = currentNode;
+      currentNode = nextNode;
+    }
+
+    return headNode;
   }
 
   public void printTree(Node node, int index) {

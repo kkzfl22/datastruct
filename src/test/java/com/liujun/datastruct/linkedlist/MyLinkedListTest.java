@@ -118,10 +118,8 @@ public class MyLinkedListTest {
     list.insertToBefore(beforeNode, 15);
   }
 
-
   @Test
-  public void testdeleteByValue()
-  {
+  public void testdeleteByValue() {
     MyLinkedList list = new MyLinkedList();
     list.add(10);
     list.add(20);
@@ -134,10 +132,8 @@ public class MyLinkedListTest {
     list.deleteByValue(40);
   }
 
-
   @Test
-  public void testdeleteByPrint()
-  {
+  public void testdeleteByPrint() {
     MyLinkedList list = new MyLinkedList();
     list.add(10);
     list.add(20);
@@ -146,12 +142,65 @@ public class MyLinkedListTest {
     list.add(50);
     list.add(60);
 
-    list.printTree(null,0);
+    list.printTree(null, 0);
 
     list.deleteByValue(20);
 
     list.deleteByValue(40);
 
-    list.printTree(null,0);
+    list.printTree(null, 0);
+  }
+
+  @Test
+  public void testReverse() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(50);
+    list.add(60);
+
+    MyLinkedList.Node node = list.findByIndex(0);
+
+    MyLinkedList.Node nodOut = MyLinkedList.reverse(node);
+
+    list.printTree(nodOut, 0);
+  }
+
+  @Test
+  public void testReverseSelf() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(50);
+    list.add(60);
+    list.add(70);
+
+    list.reverse();
+
+    list.printTree(null, 0);
+
+    list.reverse();
+
+    list.printTree(null, 0);
+  }
+
+  @Test
+  public void checkCircle() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(50);
+    list.add(60);
+    list.add(70);
+
+    list.setCircle();
+    boolean circle = list.checkCircle();
+    System.out.println(circle);
   }
 }
