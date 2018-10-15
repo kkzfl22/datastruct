@@ -205,12 +205,54 @@ public class MyLinkedListTest {
     list.add(999);
 
     list.setCircle(107, 999);
-    boolean circle = list.checkCircle();
-    System.out.println(circle);
 
     MyLinkedList.Node finde = list.findByIndex(1);
 
-    circle = list.checkCircle(finde);
+    boolean circle = list.checkCircle(finde);
     System.out.println(circle);
+  }
+
+  @Test
+  public void marge() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(40);
+    list.add(90);
+
+    MyLinkedList list2 = new MyLinkedList();
+    list2.add(50);
+    list2.add(60);
+    list2.add(70);
+    list2.add(80);
+    list2.add(120);
+
+    MyLinkedList.Node firstNode = list.findByIndex(0);
+    MyLinkedList.Node twoNode = list2.findByIndex(0);
+
+    MyLinkedList.Node head = list.margeLinked(firstNode, twoNode);
+
+    list.printTree(head, 0);
+  }
+
+  @Test
+  public void deleteLastKth() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(50);
+    list.add(60);
+    list.add(80);
+    list.add(90);
+
+    MyLinkedList.Node firstNode = list.findByIndex(0);
+
+    MyLinkedList.Node head = list.deleteLastIndex(firstNode, 3);
+
+    // MyLinkedList.Node head = list.deleteLastKth(firstNode,3);
+
+    list.printTree(head, 0);
   }
 }

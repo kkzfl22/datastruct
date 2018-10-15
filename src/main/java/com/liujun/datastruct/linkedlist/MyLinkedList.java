@@ -283,6 +283,112 @@ public class MyLinkedList {
     return false;
   }
 
+  public Node margeLinked(Node firstNode, Node twoNode) {
+    Node tmpOneNode = firstNode;
+    Node tmpTwoNode = twoNode;
+
+    Node head = null;
+    // 1,找到头节点,第一个节点的值，小于第二链表的节点值，则以第一个节点为头节点
+    if (tmpOneNode.value < tmpTwoNode.value) {
+      head = tmpOneNode;
+      tmpOneNode = tmpOneNode.next;
+    }
+    // 否则采用第二个节点为头节点
+    else {
+      head = tmpTwoNode;
+      tmpTwoNode = tmpTwoNode.next;
+    }
+
+    Node currNode = head;
+
+    // 遍历两个链表，将接链表的大小进行组合
+    while (tmpOneNode != null && tmpTwoNode != null) {
+      // 当链表1中的节点，小于链表2中的节点时，则加入新到新的节点中
+      if (tmpOneNode.value < tmpTwoNode.value) {
+        currNode.next = tmpOneNode;
+        tmpOneNode = tmpOneNode.next;
+      } else {
+        currNode.next = tmpTwoNode;
+        tmpTwoNode = tmpTwoNode.next;
+      }
+      currNode = currNode.next;
+    }
+
+    // 当链表遍历完成后，则将剩余的链表组合到返回的链表中
+    if (null != tmpOneNode) {
+      currNode.next = tmpOneNode;
+    } else if (null != twoNode) {
+      currNode.next = tmpTwoNode;
+    }
+
+    return head;
+  }
+
+  public Node deleteLastKth(Node list, int k) {
+    Node fast = list;
+    int i = 1;
+    while (fast != null && i < k) {
+      fast = fast.next;
+      ++i;
+    }
+
+    if (fast == null) return list;
+
+    Node slow = list;
+    Node prev = null;
+    while (fast.next != null) {
+      fast = fast.next;
+      prev = slow;
+      slow = slow.next;
+    }
+
+    if (prev == null) {
+      list = list.next;
+    } else {
+      prev.next = prev.next.next;
+    }
+    return list;
+  }
+
+  /**
+   * 删除倒数第index个元素
+   *
+   * @param node 节点
+   * @param index 索引
+   * @return 删除后的列表
+   */
+  public Node deleteLastIndex(Node node, int index) {
+    // 1,在单链表中要删除倒数第多少个元素，需要先找到正数的节点
+    Node first = node;
+
+    int tmpIndex = 0;
+    while (first != null && tmpIndex < index) {
+      first = first.next;
+      ++tmpIndex;
+    }
+
+    if (null == first) {
+      return null;
+    }
+
+    Node prev = null;
+    Node slow = node;
+
+    while (first != null) {
+      first = first.next;
+      prev = slow;
+      slow = slow.next;
+    }
+
+    if (prev == null) {
+      node = node.next;
+    } else {
+      prev.next = prev.next.next;
+    }
+
+    return node;
+  }
+
   /**
    * 单链表反转
    *
