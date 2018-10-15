@@ -245,31 +245,37 @@ public class MyLinkedList {
     headNode.next = head;
   }
 
-  public void setCircle() {
-    Node tempLoad = headNode.next;
+  public void setCircle(int startIndex, int lastVast) {
 
-    while (tempLoad.next != null) {
-      tempLoad = tempLoad.next;
-    }
-
-    // 设置环
-    tempLoad.next = headNode;
+    Node node = this.findByValue(90);
+    Node nodeLast = this.findByValue(100);
+    nodeLast.next = node;
   }
 
   /**
-   * 检查环
+   * 使用快慢指针来检查节点环
    *
+   * @param node 需要检查的节点
    * @return true 存在环，false 不存在环
    */
-  public boolean checkCircle() {
-    Node first = headNode.next.next;
-    Node slow = headNode.next;
+  public boolean checkCircle(Node node) {
+    if (null == node) {
+      node = headNode;
+    }
 
-    while (first != null && first.next != null) {
-      first = first.next.next;
-      slow = slow.next;
+    int index = 0;
 
-      if (first == slow) {
+    Node quicNode = node.next;
+    Node slowNode = node;
+
+    while (quicNode != null && quicNode.next != null) {
+      quicNode = quicNode.next.next;
+      slowNode = slowNode.next;
+
+      ++index;
+
+      if (quicNode == slowNode) {
+        System.out.println("quic slow point index:" + index);
         return true;
       }
     }

@@ -198,9 +198,19 @@ public class MyLinkedListTest {
     list.add(50);
     list.add(60);
     list.add(70);
+    list.add(80);
+    list.add(90);
+    list.add(100);
+    list.add(101);
+    list.add(999);
 
-    list.setCircle();
+    list.setCircle(107, 999);
     boolean circle = list.checkCircle();
+    System.out.println(circle);
+
+    MyLinkedList.Node finde = list.findByIndex(1);
+
+    circle = list.checkCircle(finde);
     System.out.println(circle);
   }
 }
