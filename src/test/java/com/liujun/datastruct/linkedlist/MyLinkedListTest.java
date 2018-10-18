@@ -255,4 +255,25 @@ public class MyLinkedListTest {
 
     list.printTree(head, 0);
   }
+
+
+  @Test
+  public void findMidNode() {
+    MyLinkedList list = new MyLinkedList();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    list.add(50);
+    list.add(60);
+    list.add(80);
+    list.add(90);
+
+    MyLinkedList.Node firstNode = list.findByIndex(0);
+
+    MyLinkedList.Node head = list.findMidNode(firstNode);
+
+    // MyLinkedList.Node head = list.deleteLastKth(firstNode,3);
+
+    list.printTree(head, 0);
+  }
 }

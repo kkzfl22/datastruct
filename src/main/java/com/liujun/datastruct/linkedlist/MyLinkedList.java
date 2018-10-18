@@ -413,6 +413,23 @@ public class MyLinkedList {
     return headNode;
   }
 
+  /**
+   * 求中间节点，同样使用快慢指针，快指针是慢指针的2倍速度，当快指针遍历到尾部时，慢指针遍历一半，这个解法非常的精炒
+   *
+   * @param node
+   * @return
+   */
+  public Node findMidNode(Node node) {
+    Node first = node;
+    Node mid = node;
+    while (first.next != null && first.next.next != null) {
+      first = first.next.next;
+      mid = mid.next;
+    }
+
+    return mid;
+  }
+
   public void printTree(Node node, int index) {
 
     Node tempNode = null;
