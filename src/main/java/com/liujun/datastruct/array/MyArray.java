@@ -33,6 +33,10 @@ public class MyArray {
     count++;
   }
 
+  public void setvalue(int index, int value) {
+    data[index] = value;
+  }
+
   /**
    * 根据索引查找数据
    *
@@ -78,6 +82,23 @@ public class MyArray {
     count++;
 
     data = dataArra;
+  }
+
+  /**
+   * 删除数组中的元素
+   *
+   * @param index
+   */
+  public void delete(int index) {
+    if (index < 0 || index > capacity) {
+      return;
+    }
+
+    for (int i = index; i < capacity - 1; i++) {
+      data[i] = data[i + 1];
+    }
+
+    data[capacity - 1] = 0;
   }
 
   public int[] getArray() {
