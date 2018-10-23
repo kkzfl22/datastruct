@@ -1,5 +1,7 @@
 package com.liujun.datastruct.stack;
 
+import com.liujun.datastruct.linkedlist.MyLinkedList;
+
 /**
  * 使用数组实现一个顺序栈
  *
@@ -9,10 +11,10 @@ package com.liujun.datastruct.stack;
  * @version 0.0.1
  * @date 2018/10/22
  */
-public class ArrayStack {
+public class LinkedStack {
 
   /** 数据存储的大小 */
-  private final int[] data;
+  private final MyLinkedList data;
 
   /** 大小 */
   private int count;
@@ -25,8 +27,8 @@ public class ArrayStack {
    *
    * @param capacity 容量
    */
-  public ArrayStack(int capacity) {
-    this.data = new int[capacity];
+  public LinkedStack(int capacity) {
+    this.data = new MyLinkedList();
     this.count = 0;
     this.capacity = capacity;
   }
@@ -41,8 +43,7 @@ public class ArrayStack {
       return false;
     }
 
-    // 1,将数据放入在存储中
-    this.data[count] = value;
+    this.data.add(value);
     ++count;
 
     return true;
@@ -59,19 +60,10 @@ public class ArrayStack {
       return -1;
     }
 
-    int data = this.data[this.count - 1];
+    int data = this.data.removeLast();
 
     this.count--;
 
     return data;
-  }
-
-  /**
-   * 获取栈的大小
-   *
-   * @return 返回栈的大小操作
-   */
-  public int size() {
-    return count;
   }
 }

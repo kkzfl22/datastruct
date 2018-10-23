@@ -9,10 +9,10 @@ package com.liujun.datastruct.stack;
  * @version 0.0.1
  * @date 2018/10/22
  */
-public class ArrayStack {
+public class ArrayStrStack {
 
   /** 数据存储的大小 */
-  private final int[] data;
+  private final String[] data;
 
   /** 大小 */
   private int count;
@@ -25,8 +25,8 @@ public class ArrayStack {
    *
    * @param capacity 容量
    */
-  public ArrayStack(int capacity) {
-    this.data = new int[capacity];
+  public ArrayStrStack(int capacity) {
+    this.data = new String[capacity];
     this.count = 0;
     this.capacity = capacity;
   }
@@ -36,7 +36,7 @@ public class ArrayStack {
    *
    * @param value 当前值
    */
-  public boolean push(int value) {
+  public boolean push(String value) {
     if (count > capacity) {
       return false;
     }
@@ -53,13 +53,13 @@ public class ArrayStack {
    *
    * @return
    */
-  public int pop() {
+  public String pop() {
 
     if (count == 0) {
-      return -1;
+      return null;
     }
 
-    int data = this.data[this.count - 1];
+    String data = this.data[this.count - 1];
 
     this.count--;
 
