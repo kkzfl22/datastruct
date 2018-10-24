@@ -66,6 +66,11 @@ public class ArrayStrStack {
     return data;
   }
 
+  /** 清空栈操作 */
+  public void clean() {
+    this.count = 0;
+  }
+
   /**
    * 获取栈的大小
    *

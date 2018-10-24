@@ -172,6 +172,24 @@ public class MyLinkedList {
   }
 
   /**
+   * 移除首节点
+   *
+   * @return
+   */
+  public Integer removeFirst() {
+
+    if (headNode.next != null) {
+      Integer value = headNode.next.value;
+
+      headNode.next = headNode.next.next;
+
+      return value;
+    }
+
+    return null;
+  }
+
+  /**
    * 移除尾节点
    *
    * @return
