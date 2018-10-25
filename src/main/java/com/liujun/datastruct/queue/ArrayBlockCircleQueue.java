@@ -47,7 +47,7 @@ public class ArrayBlockCircleQueue {
     }
 
     int tailValue = tail.get();
-    int updValue = (tail.get() + 1) % capacity;
+    int updValue = (tailValue + 1) % capacity;
 
     if (tail.compareAndSet(tailValue, updValue)) {
       this.data[tailValue] = value;
@@ -69,7 +69,7 @@ public class ArrayBlockCircleQueue {
     }
 
     int popBefore = head.get();
-    int popAfter = (head.get() + 1) % capacity;
+    int popAfter = (popBefore + 1) % capacity;
 
     if (head.compareAndSet(popBefore, popAfter)) {
       int value = this.data[popBefore];
