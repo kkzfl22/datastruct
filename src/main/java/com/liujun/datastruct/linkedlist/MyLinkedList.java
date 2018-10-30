@@ -1,7 +1,5 @@
 package com.liujun.datastruct.linkedlist;
 
-import java.util.HashMap;
-
 /**
  * 自己实现一个简单的链表功能,即现为一个int的链表
  *
@@ -27,6 +25,10 @@ public class MyLinkedList {
       this.value = value;
     }
 
+    public Integer getValue() {
+      return value;
+    }
+
     @Override
     public String toString() {
       final StringBuilder sb = new StringBuilder("Node{");
@@ -38,6 +40,9 @@ public class MyLinkedList {
 
   /** 头链表信息 */
   private Node headNode = new Node(null);
+
+  /** 链表大小 */
+  private int size;
 
   /**
    * 添加节点信息
@@ -105,6 +110,24 @@ public class MyLinkedList {
     Node insNode = new Node(value);
 
     this.insertToHead(insNode);
+  }
+
+  public int size() {
+    int size = 0;
+
+    Node tempNode = headNode.next;
+
+    while (tempNode != null) {
+
+      if (tempNode.next != null) {
+        size++;
+        tempNode = tempNode.next;
+      } else {
+        break;
+      }
+    }
+
+    return size;
   }
 
   /**
@@ -218,6 +241,26 @@ public class MyLinkedList {
     }
 
     return null;
+  }
+
+  public void removeNode(Node node) {
+    // 1,找到当前当前节点的前一级节点
+    Node tempNode = headNode;
+
+    Node prev = null;
+
+    while (tempNode != null) {
+      if (tempNode.next == node) {
+        prev = tempNode;
+        break;
+      }
+      tempNode = tempNode.next;
+    }
+
+    // 直接将上一节点的后续指针指向下一个节点的后续指针，即为完成
+    if (null != prev) {
+      prev.next = node.next;
+    }
   }
 
   public void deleteByValue(int value) {
