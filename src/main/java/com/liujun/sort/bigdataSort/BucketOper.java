@@ -109,6 +109,13 @@ public class BucketOper {
     }
   }
 
+  /**
+   * 桶数据写入
+   *
+   * @param time 时间搓
+   * @param line 行记录
+   * @throws IOException 异常
+   */
   public void bucketWrite(long time, String line) throws IOException {
     for (int i = 0; i < CACHE.size(); i++) {
       if (CACHE.get(i).getStartTime() <= time && time <= CACHE.get(i).getEndTime()) {
@@ -119,6 +126,12 @@ public class BucketOper {
     }
   }
 
+  /**
+   * 进行桶文件读取操作
+   *
+   * @param path 文件路径
+   * @return 读取完成的数据
+   */
   public List<LogInfoBean> dataReader(String path) {
 
     List<LogInfoBean> list = new ArrayList<>(1000000);
@@ -154,6 +167,7 @@ public class BucketOper {
     return list;
   }
 
+  /** 进行桶排序操作 */
   public void bucketSort() {
     for (int i = 0; i < CACHE.size(); i++) {
       String fileInput = CACHE.get(i).getFileOutInfo();
@@ -164,6 +178,11 @@ public class BucketOper {
     }
   }
 
+  /**
+   * 合并最终的文件
+   *
+   * @param outFile 输出的文件信息
+   */
   public void margeAllFile(String outFile) {
     for (int i = 0; i < CACHE.size(); i++) {
       String fileInput = CACHE.get(i).getFileOutInfo();
@@ -171,6 +190,12 @@ public class BucketOper {
     }
   }
 
+  /**
+   * 将单文件合并的方法
+   *
+   * @param input 输入文件
+   * @param output 输出文件
+   */
   public void fileMarge(String input, String output) {
     FileInputStream inputStream = null;
 
@@ -195,6 +220,12 @@ public class BucketOper {
     }
   }
 
+  /**
+   * 将排序完的数据写回桶中
+   *
+   * @param readList 集合数据
+   * @param fileOut 桶文件路径
+   */
   public void writeData(List<LogInfoBean> readList, String fileOut) {
     FileWriter outWrite = null;
     BufferedWriter bufferedWriter = null;
