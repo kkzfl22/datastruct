@@ -1,7 +1,10 @@
 package com.liujun.sort;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 使用基数排序
@@ -74,6 +77,17 @@ public class RadixSort {
   }
 
   public static void main(String[] args) {
+
+    List<Integer> value = new ArrayList<>();
+    value.add(1);
+    value.add(10);
+    value.add(5);
+    value.add(3);
+    value.add(8);
+    value.add(7);
+
+    Collections.sort(value);
+
     int[] data = new int[] {10, 20, 30, 40, 55, 60, 14, 2, 123};
     // int[] data = new int[] {3, 500};
 
