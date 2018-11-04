@@ -26,7 +26,7 @@ public class BinarySearch {
 
     while (low <= hight) {
       // 得到中间位置的索引下标
-      mid = (low + hight) / 2;
+      mid = low + (hight - low) / 2;
       findIndex++;
 
       // 如果中间值就等于给定的值，则返回

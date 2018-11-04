@@ -25,7 +25,7 @@ public class TestBinarySearch {
 
   @Test
   public void testBinarySearchRescursion() {
-    int[] data = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 22, 33, 44};
+    int[] data = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     for (int i = 0; i <= data.length - 1; i++) {
       int index = searchInstance.binarySearchRecursion(data, data[i]);
