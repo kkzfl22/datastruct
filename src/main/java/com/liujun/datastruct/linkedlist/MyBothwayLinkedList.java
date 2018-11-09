@@ -1,7 +1,7 @@
 package com.liujun.datastruct.linkedlist;
 
 /**
- * 循环链表
+ * 双向链表
  *
  * @author liujun
  * @version 0.0.1
