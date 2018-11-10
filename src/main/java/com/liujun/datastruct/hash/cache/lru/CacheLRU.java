@@ -102,6 +102,39 @@ public class CacheLRU {
   }
 
   /**
+   * 进行删除操作
+   *
+   * @param key 待删除的键的信息
+   */
+  public void delete(String key) {
+    // 1,在散列表中找到待删除的元素
+    int index = hash(key);
+
+    Data data = this.findNode(key, index);
+
+    // 如果节点被找到，进行删除操作
+    if (null != data) {
+      // 1,删除链表中的位置
+      // 1。1--查找前驱节点信息
+      Data prev = this.findHashPrev(data);
+      // 进行删除操作
+      prev.hnext = data.hnext;
+
+      // 进行链表中的位置更新
+      data.top.next = data.next;
+      if (null != data.next) {
+        data.next.top = data.top;
+      }
+      size--;
+
+      // 进行当前节点的清理
+      data.next = null;
+      data.hnext = null;
+      data.top = null;
+    }
+  }
+
+  /**
    * 最近最少访问的数据链路节点更新
    *
    * @param findNode 查询到的节点
@@ -132,6 +165,7 @@ public class CacheLRU {
 
         if (head.next != null) {
           head.next = head.next.next;
+          head.next.top = head;
           size--;
         }
 
@@ -175,10 +209,11 @@ public class CacheLRU {
     if (null != findData) {
       // 删除在链表中的位置
       findData.top.next = findData.next;
+      findData.next.top = findData.top;
       findData.next = null;
 
-      last.next = findData;
       // 将节点加入到链表的尾部
+      last.next = findData;
       findData.top = last;
       last = findData;
 
@@ -214,7 +249,7 @@ public class CacheLRU {
     Data findLastData = hashData[index];
     Data findNode = null;
     // 查找当前的key是否已经存在
-    while (findLastData.hnext != null) {
+    while (findLastData != null) {
       if (key.equals(findLastData.key)) {
         findNode = findLastData;
         break;
@@ -247,11 +282,19 @@ public class CacheLRU {
   }
 
   public void printLinkedTreeNode() {
+    System.out.println("");
+    System.out.println("");
+
     Data link = head;
 
     while (link != null) {
       System.out.print("curr{" + link.key + ":" + link.value + "}");
+
+      if (null != link && null != link.top) {
+        System.out.print(",top:{" + link.top.key + ":" + link.top.value + "}" + "\t");
+      }
       link = link.next;
+
       if (null != link) {
         System.out.println(",next:{" + link.key + ":" + link.value + "}" + "\t");
       }
@@ -261,10 +304,13 @@ public class CacheLRU {
   public void printHashTreeNode() {
     Data hashLinked;
     for (int i = 0; i < capacity; i++) {
+      System.out.print("index:" + i + "\t");
       hashLinked = hashData[i];
       while (hashLinked != null) {
+
         System.out.print("curr{" + hashLinked.key + ":" + hashLinked.value + "}");
         hashLinked = hashLinked.hnext;
+
         if (null != hashLinked) {
           System.out.print(",hnext{" + hashLinked.key + ":" + hashLinked.value + "};\t");
         }

@@ -31,5 +31,18 @@ public class TestCacheLRU {
     lru.printHashTreeNode();
     System.out.println("-----------------------------------------");
     lru.printLinkedTreeNode();
+    System.out.println();
+    System.out.println();
+    System.out.println("-----删除-----------------------------------------");
+    System.out.println();
+    lru.delete("4");
+    lru.printHashTreeNode();
+    lru.printLinkedTreeNode();
+
+    System.out.println("-----删除-----------------------------------------");
+    System.out.println();
+    lru.delete("3");
+    lru.printHashTreeNode();
+    lru.printLinkedTreeNode();
   }
 }
