@@ -24,29 +24,6 @@ public class TestReverseLinkedList {
     reverse.printLinkedList(reverseNode);
   }
 
-  public void reverse2() {
-
-    ReverseLinkedList reverse = new ReverseLinkedList();
-
-    ReverseLinkedList.ListNode reverseNodeRoot = this.getLinkedList2();
-    //
-    ReverseLinkedList.ListNode reverseNode = reverse.resverse(reverseNodeRoot, 2, 4);
-    reverse.printLinkedList(reverseNode);
-  }
-
-  @Test
-  public void reverse3() {
-
-    ReverseLinkedList reverse = new ReverseLinkedList();
-
-    ReverseLinkedList.ListNode reverseNodeRoot = this.getLinkedList2();
-    //
-    ReverseLinkedList.ListNode reverseNode = reverse.reverseBetween(reverseNodeRoot, 2, 4);
-    reverse.printLinkedList(reverseNode);
-    System.out.println("-----------------------------------");
-    reverse.printLinkedList(reverseNodeRoot);
-  }
-
   private ReverseLinkedList.ListNode getLinkedList() {
     ReverseLinkedList reverse = new ReverseLinkedList();
 
