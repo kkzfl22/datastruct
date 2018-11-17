@@ -2,7 +2,9 @@ package com.liujun.datastruct.linkedlist.leetcode.code141;
 
 import com.liujun.datastruct.linkedlist.leetcode.LinkedListBase;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 给定一个链表，判断链表中是否有环。
@@ -21,7 +23,7 @@ public class Solution extends LinkedListBase {
    */
   public boolean hasCycle(ListNode head) {
 
-    if (head == null) {
+    if (head == null && head.next != null) {
       return false;
     }
 
@@ -41,32 +43,31 @@ public class Solution extends LinkedListBase {
   }
 
   /**
-   * 使用循环遍历，来检查，
+   * 使用另外的一个空间来存储链表节点，然后检查是否在链表中
    *
-   * <p>时间复杂度为O(n的平方)
+   * <p>空间复杂度为O(n)
    *
    * @param head
    * @return
    */
   public boolean hasCycle2(ListNode head) {
 
-    if (head == null || head.next == null) {
+    if (head == null) {
       return false;
     }
 
-    ListNode node1 = head.next;
-    ListNode node2 = node1;
+    Set<ListNode> nodeSet = new HashSet<>();
 
-    while (node1 != null) {
-      node2 = node1.next;
-      while (node2 != null) {
-        if (node1 == node2) {
-          return true;
-        }
-        node2 = node2.next;
+    ListNode currNode = head;
+
+    while (currNode != null) {
+      if (nodeSet.contains(currNode)) {
+        return true;
+      } else {
+        nodeSet.add(currNode);
       }
 
-      node1 = node1.next;
+      currNode = currNode.next;
     }
 
     return false;

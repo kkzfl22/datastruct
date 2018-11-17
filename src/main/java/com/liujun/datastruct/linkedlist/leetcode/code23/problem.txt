@@ -1,0 +1,17 @@
+merge k sorted linked lists and return it as one sorted list.
+analyze and discribes its complexity
+
+
+合并k个有序的链表，返回一个合并的链表
+分析和描述时间空间复杂度
+
+
+Example:
+
+Input:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+Output: 1->1->2->3->4->4->5->6

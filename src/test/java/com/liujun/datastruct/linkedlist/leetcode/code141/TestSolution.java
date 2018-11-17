@@ -24,11 +24,11 @@ public class TestSolution {
     linked.putNode(6);
     LinkedListBase.ListNode node = linked.finNode(1);
     LinkedListBase.ListNode node2 = linked.finNode(6);
-    linked.putNextNode(node2, node);
+    // linked.putNextNode(node2, node);
 
     // linked.print(linked.root.next);
-//    linked.putNode(1);
-//    linked.putNode(2);
+    //    linked.putNode(1);
+    //    linked.putNode(2);
 
     // boolean cycle = linked.hasCycle(linked.root);
     boolean cycle = linked.hasCycle2(linked.root);
