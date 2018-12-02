@@ -35,4 +35,13 @@ public class ByteHeadInfo {
   public void setIndex(int index) {
     this.index = index;
   }
+
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder("ByteHeadInfo{");
+    sb.append("value=").append(value);
+    sb.append(", index=").append(index);
+    sb.append('}');
+    return sb.toString();
+  }
 }

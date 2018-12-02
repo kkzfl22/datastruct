@@ -19,7 +19,7 @@ public class FileOutProcess {
   public static final FileOutProcess INSTANCE = new FileOutProcess();
 
   /** 最大缓冲区大小 */
-  private static final int MAX_BUFFER = 1024;
+  private static final int MAX_BUFFER = 10;
 
   /**
    * 打开文件操作

@@ -8,6 +8,10 @@ import java.io.File;
 import java.util.PriorityQueue;
 
 /**
+ * 进行合并有序文件的测试
+ *
+ * <p>使用多种测试安例对程序进行测试
+ *
  * @author liujun
  * @version 0.0.1
  * @date 2018/11/29
@@ -34,7 +38,7 @@ public class MargeProc {
     return result;
   }
 
-  public void reader(FileMargeBusi[] margeFile) {
+  public void reader(FileMargeBusi[] margeFile, String outPath) {
     // 1,每个节点读取一个缓冲区的数据
     for (int i = 0; i < margeFile.length; i++) {
       FileMargeProc.INSTANCE.readFile(margeFile[i]);
@@ -65,14 +69,12 @@ public class MargeProc {
       }
     }
 
-    String outPath = "D:\\java\\test\\run\\marge.txt";
-
     OutFileBusi outFile = FileOutProcess.INSTANCE.openFile(outPath);
 
     ByteHeadInfo currByte;
 
     // 如果当前文件未结束，则继续遍历
-    while (!checkFinish(margeFile)) {
+    while (!checkFinish(margeFile) || !smallHeap.isEmpty()) {
       currByte = smallHeap.poll();
 
       // 如果当前缓冲区未满，先写入缓冲区
@@ -80,10 +82,12 @@ public class MargeProc {
         outFile.getBuffer()[outFile.getOutIndex()] = currByte.getValue();
         outFile.setOutIndex(outFile.getOutIndex() + 1);
       }
+
       // 当缓冲区满了，写入文件中
-      else {
+      if (outFile.getOutIndex() == outFile.getMaxIndex()) {
         FileOutProcess.INSTANCE.fileWrite(outFile);
       }
+
       // 将当前文件的下一个数据加入到当前小顶堆中
       this.readFileNextByte(margeFile[currByte.getIndex()], currByte.getIndex(), smallHeap);
     }
@@ -111,8 +115,8 @@ public class MargeProc {
       // 将索引向前推进一步
       margeFile.setBufferReadIndex(margeFile.getBufferReadIndex() + 1);
     }
-    // 如果已经读取完成，则加载下一批缓冲区
-    else {
+    // 如果已经读取完成,则写入磁盘文件中
+    if (margeFile.getBufferReadIndex() == margeFile.getFileReadIndex()) {
       FileMargeProc.INSTANCE.readFile(margeFile);
     }
   }

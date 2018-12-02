@@ -19,6 +19,9 @@ public class FileMargeProc {
   /** 实例信息 */
   public static final FileMargeProc INSTANCE = new FileMargeProc();
 
+  /** 缓冲区的大小 */
+  private static final int MAX_BUFF_SIZE = 10;
+
   /**
    * 打开文件
    *
@@ -32,7 +35,7 @@ public class FileMargeProc {
       try {
         margeBean.setInput(new FileInputStream(path));
         margeBean.setReadPath(path.getPath());
-        margeBean.setBuffer(new byte[1024]);
+        margeBean.setBuffer(new byte[MAX_BUFF_SIZE]);
         margeBean.setFileReadIndex(0);
         margeBean.setBufferReadIndex(0);
       } catch (FileNotFoundException e) {
@@ -55,7 +58,7 @@ public class FileMargeProc {
         bean.setFileReadIndex(readLength);
         bean.setBufferReadIndex(0);
 
-        if (readLength <= 0) {
+        if (readLength == -1) {
           bean.setFinish(true);
         }
       } catch (IOException e) {
