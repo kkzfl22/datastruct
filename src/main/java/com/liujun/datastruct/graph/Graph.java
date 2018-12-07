@@ -115,6 +115,50 @@ public class Graph {
     System.out.print(t + " ");
   }
 
+  boolean found = false;
 
+  /**
+   * 使用深度优先的搜索算法进行搜索
+   *
+   * @param s 开始顶点
+   * @param t 结束顶点
+   */
+  public void dfs(int s, int t) {
+    if (s == t) {
+      return;
+    }
 
+    boolean[] visited = new boolean[v];
+
+    // 顶点遍历链
+    int[] prev = new int[v];
+    for (int i = 0; i < v; i++) {
+      prev[i] = -1;
+    }
+
+    recurDfs(s, t, visited, prev);
+
+    print(prev, s, t);
+  }
+
+  private void recurDfs(int s, int t, boolean[] visited, int[] prev) {
+
+    System.out.println("当前顶点:" + s);
+    if (found) {
+      return;
+    }
+    visited[s] = true;
+    if (s == t) {
+      found = true;
+      return;
+    }
+
+    for (int i = 0; i < adj[s].size(); i++) {
+      int q = adj[s].get(i);
+      if (!visited[q]) {
+        prev[q] = s;
+        recurDfs(q, t, visited, prev);
+      }
+    }
+  }
 }

@@ -51,56 +51,104 @@ public class MyGraph {
       return;
     }
 
-    // 用来标识顶点是否被访问
+    // 1，当前顶点是否被访问过的数组
     boolean[] visited = new boolean[v];
 
-    // 使用队列来记录将要访问的队列
+    // 2，队列，用来记录下同层的待扫描的节点,初始扫描为起始顶点
     Queue<Integer> queue = new LinkedList<>();
-    // 首先将初始化顶点压入队列
     queue.add(s);
 
-    // 用来记录访问过的顶点信息
-    int[] topArrays = new int[v];
+    // 3,记录下访问顺序的
+    int[] prev = new int[v];
     for (int i = 0; i < v; i++) {
-      topArrays[i] = -1;
+      prev[i] = -1;
     }
 
+    // 进行队列扫描
     while (true) {
-      // 从队列中取出一个顶点，开始访问
-      int w = queue.poll();
+      // 进行遍历操作
+      int queuePoint = queue.poll();
 
-      for (int i = 0; i < topLinked[w].size(); i++) {
-        int value = topLinked[w].get(i);
+      // 遍历顶点链
+      for (int i = 0; i < topLinked[queuePoint].size(); i++) {
+        int currPoint = topLinked[queuePoint].get(i);
+        // 检查顶点是否被访问
+        if (!visited[currPoint]) {
+          visited[currPoint] = true;
+          // 记录下前一个顶点
+          prev[currPoint] = queuePoint;
 
-        // 检查是否被访问
-        if (!visited[value]) {
-          // 记录下当前过来的前一个节点
-          topArrays[value] = w;
-          // 检查当前顶点是否为要查找的节点，如果是，则直接打印
-          if (value == t) {
-            System.out.println(Arrays.toString(topArrays));
-            print(topArrays, s, t);
+          // 如果顶点的关联关系被找到，则进行打印信息
+          if (currPoint == t) {
+            this.print(prev, s, currPoint);
             return;
           }
 
-          queue.add(value);
-          visited[value] = true;
+          // 将元素夺入队列，继续层层推进
+          queue.add(currPoint);
         }
       }
     }
   }
 
   /**
-   * 进行顶点链的打印
+   * 进行顶点的打印操作
    *
-   * @param topArrays 当前的顶点链
-   * @param start 开始顶点
-   * @param top 上一个顶点
+   * @param prev 访问的顶点链操作
+   * @param start 开始节点
+   * @param top 上一个节点
    */
-  private void print(int[] topArrays, int start, int top) {
-    if (topArrays[start] != -1 && start != top) {
-      print(topArrays, start, topArrays[top]);
+  private void print(int[] prev, int start, int top) {
+    if (prev[top] != -1 && start != top) {
+      print(prev, start, prev[top]);
     }
+
     System.out.print(top + "\t");
+  }
+
+  /**
+   * 深度优先搜索算法
+   *
+   * @param s
+   * @param t
+   */
+  public void dfs(int s, int t) {
+    if (s == t) {
+      return;
+    }
+
+    // 声明访问过的对象信息
+    boolean[] visited = new boolean[v];
+
+    // 访问对象信息
+    int[] prev = new int[v];
+    for (int i = 0; i < v; i++) {
+      prev[i] = -1;
+    }
+
+    // 进行使用递归进行深度优先搜索算法
+    boolean found = recurDfs(s, t, visited, prev);
+    if (found) {
+      print(prev, s, t);
+    }
+  }
+
+  private boolean recurDfs(int s, int t, boolean[] visited, int[] prev) {
+
+    visited[s] = true;
+    if (s == t) {
+      return true;
+    }
+
+    for (int i = 0; i < topLinked[s].size(); i++) {
+      int tmpQ = topLinked[s].get(i);
+
+      if (!visited[tmpQ]) {
+        prev[tmpQ] = s;
+        return recurDfs(tmpQ, t, visited, prev);
+      }
+    }
+
+    return false;
   }
 }

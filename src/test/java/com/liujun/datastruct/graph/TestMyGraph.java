@@ -9,10 +9,12 @@ import org.junit.Test;
  */
 public class TestMyGraph {
 
-  @Test
-  public void testBfs() {
-    MyGraph graph = new MyGraph(12);
-
+  /**
+   * 添加顶点信息
+   *
+   * @param graph 图信息
+   */
+  private void addPoint(MyGraph graph) {
     // 顶点0
     graph.add(0, 1);
     graph.add(0, 4);
@@ -70,7 +72,23 @@ public class TestMyGraph {
     // 顶点11
     graph.add(11, 7);
     graph.add(11, 10);
+  }
+
+  @Test
+  public void testBfs() {
+    MyGraph graph = new MyGraph(12);
+
+    this.addPoint(graph);
 
     graph.bfs(0, 11);
+  }
+
+  @Test
+  public void testdfs() {
+    MyGraph graph = new MyGraph(12);
+
+    this.addPoint(graph);
+
+    graph.dfs(0, 11);
   }
 }
