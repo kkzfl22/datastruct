@@ -85,6 +85,13 @@ public class BoyerMoore {
     return -1;
   }
 
+  /**
+   * @param j 坏字符在模式串的位置
+   * @param m 模式串的长度
+   * @param suffix 好后缀长度对应的起始索引
+   * @param prefix 是否与前缀字符匹配
+   * @return
+   */
   public int moveGs(int j, int m, int[] suffix, boolean[] prefix) {
     // 好后缀的长度
     int k = m - 1 - j;

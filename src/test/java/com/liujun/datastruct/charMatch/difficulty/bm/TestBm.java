@@ -15,8 +15,8 @@ public class TestBm {
   public void testBm() {
     BoyerMoore instace = new BoyerMoore();
 
-    String src = "my name is liujun,this is kk zlf hellow this is bacterator";
-    String find = "kk";
+    String src =  "eaaccccc";
+    String find = "cccc";
 
     int index = instace.bm(src, find);
     System.out.println("当前位置为:" + index);
@@ -28,7 +28,7 @@ public class TestBm {
 
   @Test
   public void testGeneratsGS() {
-    String find = "feife";
+    String find = "cccccc";
     int length = find.length();
 
     BoyerMoore instace = new BoyerMoore();
