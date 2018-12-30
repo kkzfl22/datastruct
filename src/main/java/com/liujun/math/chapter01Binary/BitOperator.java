@@ -53,6 +53,22 @@ public class BitOperator {
   }
 
   /**
+   * 进行按位与操作
+   *
+   * @param num1
+   * @param num2
+   * @return
+   */
+  public static int and(int num1, int num2) {
+    System.out.println("num1的二进制:" + Binary.decimalToBinary(num1));
+    System.out.println("num2的二进制:" + Binary.decimalToBinary(num2));
+
+    int reslut = num1 & num2;
+    System.out.println("out1的二进制:" + Binary.decimalToBinary(reslut));
+    return reslut;
+  }
+
+  /**
    * 进行按位或操作
    *
    * @param num1 数值1
@@ -63,6 +79,24 @@ public class BitOperator {
     System.out.println("num1的二进制:" + Binary.decimalToBinary(num1));
     System.out.println("num2的二进制:" + Binary.decimalToBinary(num2));
 
-    return num1 | num2;
+    int reslut = num1 | num2;
+    System.out.println("out1的二进制:" + Binary.decimalToBinary(reslut));
+    return reslut;
+  }
+
+  /**
+   * 进行按位异或操作
+   *
+   * @param num1
+   * @param num2
+   * @return
+   */
+  public static int xor(int num1, int num2) {
+    System.out.println("num1的二进制:" + Binary.decimalToBinary(num1));
+    System.out.println("num2的二进制:" + Binary.decimalToBinary(num2));
+
+    int reslut = num1 ^ num2;
+    System.out.println("out1的二进制:" + Binary.decimalToBinary(reslut));
+    return reslut;
   }
 }

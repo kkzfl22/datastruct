@@ -19,7 +19,7 @@ public class TestMyStack {
     stack.push(3);
     stack.push(4);
 
-    System.out.println(stack.top());
+    // System.out.println(stack.top());
     System.out.println(stack.pop());
     System.out.println(stack.pop());
     System.out.println(stack.pop());
