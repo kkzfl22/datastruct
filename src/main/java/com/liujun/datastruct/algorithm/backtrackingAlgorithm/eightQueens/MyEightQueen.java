@@ -1,7 +1,5 @@
 package com.liujun.datastruct.algorithm.backtrackingAlgorithm.eightQueens;
 
-import java.util.Queue;
-
 /**
  * 进行八皇后的问题求解
  *
