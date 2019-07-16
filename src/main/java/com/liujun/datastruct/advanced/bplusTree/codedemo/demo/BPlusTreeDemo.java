@@ -1,10 +1,19 @@
 package com.liujun.datastruct.advanced.bplusTree.codedemo.demo;
 
-import com.liujun.datastruct.advanced.bplusTree.codedemo.BPlusTree;
+/**
+ * @author liujun
+ * @version 0.0.1
+ * @date 2019/01/23
+ */
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
-import java.util.*;
-
-public class BPlusTreeSrc<K extends Comparable<? super K>, V> {
+public class BPlusTreeDemo<K extends Comparable<? super K>, V> {
 
   public static enum RangePolicy {
     EXCLUSIVE,
@@ -23,11 +32,11 @@ public class BPlusTreeSrc<K extends Comparable<? super K>, V> {
   /** The root node of the B+ tree. */
   private Node root;
 
-  public BPlusTreeSrc() {
+  public BPlusTreeDemo() {
     this(DEFAULT_BRANCHING_FACTOR);
   }
 
-  public BPlusTreeSrc(int branchingFactor) {
+  public BPlusTreeDemo(int branchingFactor) {
     if (branchingFactor <= 2)
       throw new IllegalArgumentException("Illegal branching factor: " + branchingFactor);
     this.branchingFactor = branchingFactor;
@@ -99,7 +108,7 @@ public class BPlusTreeSrc<K extends Comparable<? super K>, V> {
           Node node = it.next();
           sb.append(node.toString());
           if (it.hasNext()) sb.append(", ");
-          if (node instanceof BPlusTreeSrc.InternalNode)
+          if (node instanceof BPlusTreeDemo.InternalNode)
             nextQueue.add(((InternalNode) node).children);
         }
         sb.append('}');

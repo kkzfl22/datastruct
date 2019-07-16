@@ -36,7 +36,7 @@ public class MySkipListNew {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("Node{");
+      final StringBuilder sb = new StringBuilder("MyNode{");
       sb.append("value=").append(value);
       sb.append(", maxLevel=").append(maxLevel);
       sb.append('}');

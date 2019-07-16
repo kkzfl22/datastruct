@@ -21,7 +21,7 @@ class BPlusTree {
       // a B+ Tree must have an initial degree
     	degree = x;
     	
-    	// The initial type of Node for a B+Tree is a leaf
+    	// The initial type of MyNode for a B+Tree is a leaf
     	tree = new LeafNode(degree);
     	
     	debug = false;
@@ -512,7 +512,7 @@ class TreeNode extends Node {
 		}
 		
 		
-		// return the Node in pointer(i)
+		// return the MyNode in pointer(i)
 		return (Node) pointer.elementAt(i);
 		
 	}

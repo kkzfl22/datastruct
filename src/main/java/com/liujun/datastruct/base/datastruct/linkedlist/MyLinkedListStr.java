@@ -31,7 +31,7 @@ public class MyLinkedListStr {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("Node{");
+      final StringBuilder sb = new StringBuilder("MyNode{");
       sb.append("value=").append(value);
       sb.append('}');
       return sb.toString();

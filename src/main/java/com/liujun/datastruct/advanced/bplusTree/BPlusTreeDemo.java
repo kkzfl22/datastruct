@@ -13,6 +13,9 @@ import java.util.LinkedList;
  */
 public class BPlusTreeDemo {
 
+  /** 根节点 */
+  private BplusTreeLeafNode root;
+
   /**
    * B+树 非叶子节点的定义
    *
@@ -62,9 +65,6 @@ public class BPlusTreeDemo {
     /** 这个节点在链表中的后继节点 */
     public BplusTreeLeafNode next;
   }
-
-  /** 叶子节点 */
-  private LinkedList<BplusTreeLeafNode> leafNodes = new LinkedList<>();
 
   public void add(int value) {}
 

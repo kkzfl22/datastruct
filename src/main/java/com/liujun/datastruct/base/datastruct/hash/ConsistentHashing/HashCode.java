@@ -1,5 +1,8 @@
 package com.liujun.datastruct.base.datastruct.hash.ConsistentHashing;
 
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Hashing;
+
 /**
  * 获取hash的方法
  *
@@ -23,5 +26,17 @@ public class HashCode {
     // 如果算出来的值为负数则取其绝对值
     if (hash < 0) hash = Math.abs(hash);
     return hash;
+  }
+
+  /**
+   * Redis 使用MurmurHash2这种运行速度快、随机性好的哈希算法作为哈希函数
+   *
+   * @return
+   */
+  public static int hash() {
+
+    return Hashing.murmur3_32().bits();
+
+
   }
 }

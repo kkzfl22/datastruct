@@ -251,7 +251,7 @@ public class MyLinkedListTest {
 
     MyLinkedList.Node head = list.deleteLastIndex(firstNode, 3);
 
-    // MyLinkedList.Node head = list.deleteLastKth(firstNode,3);
+    // MyLinkedList.MyNode head = list.deleteLastKth(firstNode,3);
 
     list.printTree(head, 0);
   }
@@ -272,7 +272,7 @@ public class MyLinkedListTest {
 
     MyLinkedList.Node head = list.findMidNode(firstNode);
 
-    // MyLinkedList.Node head = list.deleteLastKth(firstNode,3);
+    // MyLinkedList.MyNode head = list.deleteLastKth(firstNode,3);
 
     list.printTree(head, 0);
   }

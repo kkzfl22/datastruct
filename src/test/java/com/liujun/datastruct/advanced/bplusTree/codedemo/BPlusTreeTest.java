@@ -17,6 +17,11 @@ public class BPlusTreeTest {
     bpt.insert(7, "h");
     bpt.insert(8, "i");
     bpt.insert(9, "j");
+    bpt.insert(10, "k");
+    bpt.insert(11, "l");
+    bpt.insert(12, "r");
+    bpt.insert(13, "m");
+    bpt.insert(14, "n");
     bpt.delete(1);
     bpt.delete(3);
     bpt.delete(5);

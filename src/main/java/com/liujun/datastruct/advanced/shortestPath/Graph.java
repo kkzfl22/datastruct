@@ -122,7 +122,7 @@ public class Graph {
       for (int i = 0; i < adj[minVertext.id].size(); i++) {
         // 取出现minVertext相领的边
         Edge e = adj[minVertext.id].get(i);
-        // 取出下一条边
+        // 取出有向边所指向的顶点
         Vertex nextVertext = vertexes[e.tid];
         // 找到next最短的路径
         if (minVertext.dist + e.w < nextVertext.dist) {

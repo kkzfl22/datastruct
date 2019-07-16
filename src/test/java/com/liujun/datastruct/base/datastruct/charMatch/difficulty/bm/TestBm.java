@@ -26,6 +26,23 @@ public class TestBm {
     }
   }
 
+
+  @Test
+  public void testBm2() {
+    BoyerMoore instace = new BoyerMoore();
+
+    String src =
+        "<a href=\"http://news.sohu.com/s2018/guoqing69/index.shtml\" target=\"_blank\"></a>";
+    String find = "href=\"";
+
+    int index = instace.bm(src, find);
+    System.out.println("当前位置为:" + index);
+
+    if (index != -1) {
+      System.out.println("截取:" + src.substring(index, index + find.length()));
+    }
+  }
+
   @Test
   public void testGeneratsGS() {
     String find = "cccccc";
