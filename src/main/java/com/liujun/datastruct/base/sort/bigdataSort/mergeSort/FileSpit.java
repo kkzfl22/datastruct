@@ -45,7 +45,7 @@ public class FileSpit {
       reader.open();
       write.open();
 
-      String readLine = null;
+      String readLine;
       while ((readLine = reader.readLine()) != null) {
         write.write(readLine);
       }
