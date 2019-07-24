@@ -1,4 +1,4 @@
-package com.liujun.datastruct.base.sort.bigdataSort;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package com.liujun.datastruct.base.sort.bigdataSort;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort;
 
 import com.liujun.datastruct.utils.IOUtils;
 
@@ -51,8 +51,8 @@ public class FileCreate {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.closeStream(bufferedWriter);
-      IOUtils.closeStream(fileWriter);
+      IOUtils.Close(bufferedWriter);
+      IOUtils.Close(fileWriter);
     }
   }
 

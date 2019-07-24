@@ -10,7 +10,11 @@ import java.io.IOException;
  */
 public class IOUtils {
 
-  public static void closeStream(Closeable stream) {
+  /**
+   * 关闭操作
+   * @param stream
+   */
+  public static void Close(Closeable stream) {
     if (null != stream) {
       try {
         stream.close();

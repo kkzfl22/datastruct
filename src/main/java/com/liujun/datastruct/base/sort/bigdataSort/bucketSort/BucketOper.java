@@ -1,9 +1,9 @@
-package com.liujun.datastruct.base.sort.bigdataSort;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort;
 
-import com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge.FileMergeScope;
-import com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge.LogInfoBean;
+import com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge.FileMergeScope;
+import com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge.LogInfoBean;
 import com.liujun.datastruct.utils.IOUtils;
-import com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge.BucketFileInfo;
+import com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge.BucketFileInfo;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -104,8 +104,8 @@ public class BucketOper {
 
   public void close() {
     for (int i = 0; i < CACHE.size(); i++) {
-      IOUtils.closeStream(CACHE.get(i).getBufferWrite());
-      IOUtils.closeStream(CACHE.get(i).getWrite());
+      IOUtils.Close(CACHE.get(i).getBufferWrite());
+      IOUtils.Close(CACHE.get(i).getWrite());
     }
   }
 
@@ -134,7 +134,7 @@ public class BucketOper {
    */
   public List<LogInfoBean> dataReader(String path) {
 
-    List<LogInfoBean> list = new ArrayList<>(1000000);
+    List<LogInfoBean> list = new ArrayList<>(10000);
 
     FileReader read = null;
     BufferedReader buffered = null;
@@ -160,8 +160,8 @@ public class BucketOper {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.closeStream(buffered);
-      IOUtils.closeStream(read);
+      IOUtils.Close(buffered);
+      IOUtils.Close(read);
     }
 
     return list;
@@ -215,8 +215,8 @@ public class BucketOper {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.closeStream(outputStream);
-      IOUtils.closeStream(inputStream);
+      IOUtils.Close(outputStream);
+      IOUtils.Close(inputStream);
     }
   }
 
@@ -242,8 +242,8 @@ public class BucketOper {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.closeStream(bufferedWriter);
-      IOUtils.closeStream(outWrite);
+      IOUtils.Close(bufferedWriter);
+      IOUtils.Close(outWrite);
     }
   }
 

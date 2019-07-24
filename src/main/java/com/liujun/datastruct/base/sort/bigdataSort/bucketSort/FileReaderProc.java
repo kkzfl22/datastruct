@@ -1,6 +1,6 @@
-package com.liujun.datastruct.base.sort.bigdataSort;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort;
 
-import com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge.FileMergeScope;
+import com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge.FileMergeScope;
 import com.liujun.datastruct.utils.IOUtils;
 
 import java.io.*;
@@ -55,8 +55,8 @@ public class FileReaderProc {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.closeStream(bufferedReader);
-      IOUtils.closeStream(fileReader);
+      IOUtils.Close(bufferedReader);
+      IOUtils.Close(fileReader);
     }
   }
 
@@ -82,8 +82,8 @@ public class FileReaderProc {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.closeStream(bufferedReader);
-      IOUtils.closeStream(fileReader);
+      IOUtils.Close(bufferedReader);
+      IOUtils.Close(fileReader);
     }
   }
 

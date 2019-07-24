@@ -1,12 +1,12 @@
-package com.liujun.datastruct.base.sort.bigdataSort;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort;
 
-import com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge.BucketFileInfo;
-import com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge.FileMergeScope;
+import com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge.BucketFileInfo;
+import com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge.FileMergeScope;
 
 import java.util.List;
 
 /**
- * 进行桶排序操作
+ * 进行桶排序操作,此排序使用单分桶操作
  *
  * @author liujun
  * @version 0.0.1
@@ -20,15 +20,13 @@ public class BucketSort {
 
     String filePath = "D:\\java\\test\\datastruct\\sort\\bigdata\\";
 
-    long startTime = System.currentTimeMillis();
-
     // 1，读取数据范围
     FileMergeScope scope = FileReaderProc.INSTANCE.getFileMerge(filePath);
 
     String basePath = filePath + "bucket/";
 
     // 2,进行分桶操作
-    List<BucketFileInfo> bucketList = BucketOper.INSTANCE.bucketSpit(scope, 100, basePath);
+    List<BucketFileInfo> bucketList = BucketOper.INSTANCE.bucketSpit(scope, 4000, basePath);
 
     for (int i = 0; i < bucketList.size(); i++) {
       System.out.println(bucketList.get(i));

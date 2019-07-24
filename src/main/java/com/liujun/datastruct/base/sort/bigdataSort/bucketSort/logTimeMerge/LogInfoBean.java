@@ -1,4 +1,4 @@
-package com.liujun.datastruct.base.sort.bigdataSort.logTimeMerge;
+package com.liujun.datastruct.base.sort.bigdataSort.bucketSort.logTimeMerge;
 
 /**
  * 日志信息
