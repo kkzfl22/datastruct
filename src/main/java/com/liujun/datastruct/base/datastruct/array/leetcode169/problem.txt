@@ -1,0 +1,17 @@
+Given an array of size n, find the majority（众数、复数） element.
+给定一个N个大小的数组，找到其中的众数，这个
+The majority element is the element that appears(出现) more than ⌊ n/2 ⌋ times.
+这个众数是指元素出现的次数超过[n/2]的元素.
+
+You may assume that the array is non-empty and the majority element always exist in the array.
+你可以假定这个元素没有有空元素，并且，这个众数元素总是会出现在这的数据中
+
+Example 1:
+
+Input: [3,2,3]
+Output: 3
+Example 2:
+
+Input: [2,2,1,1,1,2,2]
+Output: 2
+
