@@ -1,5 +1,8 @@
 package com.liujun.datastruct.base.datastruct.array;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -12,28 +15,36 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TestMyArrayList {
 
   /** 测试动态数组的在不扩容的情况下，数据添加，删除，与获取 */
-  public void testExtend1() {
+  @Test
+  public void testDynamicArray() {
 
-    int maxSize = 8;
+    int maxSizeInit = 8;
 
-    MyArrayList list = new MyArrayList(maxSize);
+    int runMaxSize = 16;
 
-    for (int i = 0; i < maxSize; i++) {
+    MyArrayList list = new MyArrayList(maxSizeInit);
+
+    for (int i = 0; i < runMaxSize; i++) {
       list.add(i);
+      Object valueValues = list.get(i);
+      Assert.assertEquals(valueValues, i);
     }
 
+    Assert.assertEquals(runMaxSize, list.size());
+
     // 进行随机删除操作
-    for (int i = 0; i < maxSize / 2; i++) {
+    for (int i = 1; i < runMaxSize / 2; i++) {
       list.delete(ThreadLocalRandom.current().nextInt(0, i));
     }
 
-    // 进行设置
-    for (int i = 0; i < maxSize; i++) {
-      list.set(i, i * 100 + 1);
-    }
+    Assert.assertEquals(runMaxSize / 2 + 1, list.size());
 
-    for (int i = 0; i < maxSize; i++) {
-      list.get(i);
+    // 进行设置
+    for (int i = 0; i < runMaxSize; i++) {
+      int newValue = i * 100 + 1;
+      list.set(i, newValue);
+      Object newGetValue = list.get(i);
+      Assert.assertEquals(newValue, newGetValue);
     }
   }
 }
