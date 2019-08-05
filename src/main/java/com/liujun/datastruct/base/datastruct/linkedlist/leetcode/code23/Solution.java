@@ -9,7 +9,7 @@ import com.liujun.datastruct.base.datastruct.linkedlist.leetcode.LinkedListBase;
  *
  * @author liujun
  * @version 0.0.1
- * @date 2018/11/16
+ * @since  2018/11/16
  */
 public class Solution extends LinkedListBase {
 
