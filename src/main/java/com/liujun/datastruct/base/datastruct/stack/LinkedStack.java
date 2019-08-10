@@ -1,6 +1,6 @@
 package com.liujun.datastruct.base.datastruct.stack;
 
-import com.liujun.datastruct.base.datastruct.linkedlist.MyLinkedList;
+import com.liujun.datastruct.base.datastruct.linkedlist.implement.MyLinkedNode;
 
 /**
  * 使用数组实现一个顺序栈
@@ -14,23 +14,15 @@ import com.liujun.datastruct.base.datastruct.linkedlist.MyLinkedList;
 public class LinkedStack {
 
   /** 数据存储的大小 */
-  private final MyLinkedList data;
+  private final MyLinkedNode data;
 
   /** 大小 */
   private int count;
 
-  /** 最大容量 */
-  private final int capacity;
-
-  /**
-   * 初始化构造函数
-   *
-   * @param capacity 容量
-   */
-  public LinkedStack(int capacity) {
-    this.data = new MyLinkedList();
+  /** 初始化构造函数 */
+  public LinkedStack() {
+    this.data = new MyLinkedNode();
     this.count = 0;
-    this.capacity = capacity;
   }
 
   /**
@@ -39,14 +31,19 @@ public class LinkedStack {
    * @param value 当前值
    */
   public boolean push(int value) {
-    if (count > capacity) {
-      return false;
-    }
 
     this.data.add(value);
     ++count;
 
     return true;
+  }
+
+  public int get() {
+    if (count == 0) {
+      return -1;
+    }
+
+    return data.getLastValue();
   }
 
   /**
@@ -60,7 +57,7 @@ public class LinkedStack {
       return -1;
     }
 
-    int data = this.data.removeLast();
+    int data = this.data.deleteLast();
 
     this.count--;
 

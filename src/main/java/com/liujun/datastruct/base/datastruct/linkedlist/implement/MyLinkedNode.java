@@ -101,6 +101,18 @@ public class MyLinkedNode {
   }
 
   /**
+   * 获取最后一个节点的值
+   *
+   * @return
+   */
+  public int getLastValue() {
+    if (currNode == null) {
+      return -1;
+    }
+    return currNode.value;
+  }
+
+  /**
    * 获取指定的位置
    *
    * @param index

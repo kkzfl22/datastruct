@@ -1,5 +1,6 @@
 package com.liujun.datastruct.base.datastruct.stack;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -11,20 +12,22 @@ public class TestLinkedStack {
 
   @Test
   public void testLinkedStack() {
-    LinkedStack linked = new LinkedStack(10);
+    LinkedStack linked = new LinkedStack();
 
-    linked.push(1);
-    linked.push(2);
-    linked.push(3);
-    linked.push(4);
-    linked.push(5);
-    linked.push(6);
+    int maxValue = 10;
 
-    System.out.println(linked.pop());
-    System.out.println(linked.pop());
-    System.out.println(linked.pop());
-    System.out.println(linked.pop());
-    System.out.println(linked.pop());
-    System.out.println(linked.pop());
+    for (int i = 0; i < maxValue; i++) {
+      linked.push(i);
+    }
+
+    int loopIndex = maxValue - 1;
+
+    while (loopIndex > 0) {
+      int value = linked.pop();
+
+      Assert.assertEquals(loopIndex, value);
+
+      loopIndex--;
+    }
   }
 }
