@@ -34,6 +34,11 @@ public class MyArrayStack {
    * @param value
    */
   public void push(int value) {
+
+    if (currSize > currSize) {
+      throw new IndexOutOfBoundsException("index out of bounds ");
+    }
+
     stackArray[currSize++] = value;
   }
 
