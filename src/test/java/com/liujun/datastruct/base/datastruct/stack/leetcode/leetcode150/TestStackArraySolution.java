@@ -28,5 +28,6 @@ public class TestStackArraySolution {
     int value2 = instance.evalRPN(runcount2);
 
     Assert.assertEquals(22, value2);
+
   }
 }

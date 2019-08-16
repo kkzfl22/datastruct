@@ -21,22 +21,33 @@ public class StackArraySolution {
 
     int currIndex = -1;
 
+    int tmpval1;
+    int tmpVal2;
+
     for (int i = 0; i < operations.length; i++) {
       switch (operations[i]) {
         case "+":
-          value[currIndex - 1] = value[currIndex - 1] + value[currIndex];
+          tmpval1 = value[currIndex - 1];
+          tmpVal2 = value[currIndex];
+          value[currIndex - 1] = tmpval1 + tmpVal2;
           currIndex--;
           break;
         case "-":
-          value[currIndex - 1] = value[currIndex - 1] - value[currIndex];
+          tmpval1 = value[currIndex - 1];
+          tmpVal2 = value[currIndex];
+          value[currIndex - 1] = tmpval1 - tmpVal2;
           currIndex--;
           break;
         case "*":
-          value[currIndex - 1] = value[currIndex - 1] * value[currIndex];
+          tmpval1 = value[currIndex - 1];
+          tmpVal2 = value[currIndex];
+          value[currIndex - 1] = tmpval1 * tmpVal2;
           currIndex--;
           break;
         case "/":
-          value[currIndex - 1] = value[currIndex - 1] / value[currIndex];
+          tmpval1 = value[currIndex - 1];
+          tmpVal2 = value[currIndex];
+          value[currIndex - 1] = tmpval1 / tmpVal2;
           currIndex--;
           break;
         default:
