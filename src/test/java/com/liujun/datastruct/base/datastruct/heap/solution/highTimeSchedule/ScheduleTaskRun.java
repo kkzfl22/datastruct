@@ -1,5 +1,7 @@
 package com.liujun.datastruct.base.datastruct.heap.solution.highTimeSchedule;
 
+import java.time.LocalDateTime;
+
 /**
  * 高性能定时任务的执行
  *
@@ -11,8 +13,12 @@ public class ScheduleTaskRun {
 
   public static void main(String[] args) {
 
-    // 30秒后执行当前任务
-    long runTime = System.currentTimeMillis() + 1 * 10 * 1000;
+    Thread thread = new Thread(MySchedule.INSTANCE);
+
+    thread.start();
+
+    // 5秒后执行当前任务
+    long runTime = System.currentTimeMillis() + 1 * 5 * 1000;
 
     Runnable runTask =
         () -> {
@@ -20,6 +26,13 @@ public class ScheduleTaskRun {
           System.out.println("时间点为:" + System.currentTimeMillis());
         };
 
+    LocalDateTime localDateTime = LocalDateTime.now();
+    System.out.println("启动时间:" + localDateTime.toString());
+
+    MySchedule.INSTANCE.delayRun(runTime, runTask);
+    runTime = System.currentTimeMillis() + 1 * 8 * 1000;
+    MySchedule.INSTANCE.delayRun(runTime, runTask);
+    runTime = System.currentTimeMillis() + 1 * 7 * 1000;
     MySchedule.INSTANCE.delayRun(runTime, runTask);
   }
 }

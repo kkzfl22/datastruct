@@ -40,7 +40,7 @@ public class MyLinkedStack {
    */
   public void push(int value) {
     if (size > maxSize) {
-      throw new IndexOutOfBoundsException("index out of bounds ");
+      throw new IndexOutOfBoundsException("exceed the limit");
     }
     // 1,获得原来链表的下级节点
     Node nextTmp = root.next;
@@ -67,6 +67,10 @@ public class MyLinkedStack {
    * @return
    */
   public int pop() {
+    if (size < 1) {
+      throw new NullPointerException("stack is null");
+    }
+
     // 1,找到栈顶元素
     Node tmpNode = root.next;
 

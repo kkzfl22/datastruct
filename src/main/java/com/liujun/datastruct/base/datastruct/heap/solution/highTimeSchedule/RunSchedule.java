@@ -1,5 +1,7 @@
 package com.liujun.datastruct.base.datastruct.heap.solution.highTimeSchedule;
 
+import java.time.LocalDateTime;
+
 /**
  * @author liujun
  * @version 0.0.1
@@ -23,11 +25,7 @@ public class RunSchedule {
 
       if (needTime > 0) {
         try {
-          long startTime = System.currentTimeMillis();
-          System.out.println("开始" + startTime);
           Thread.sleep(needTime);
-          long endTime = System.currentTimeMillis();
-          System.out.println("结束" + (endTime - startTime));
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -35,6 +33,9 @@ public class RunSchedule {
         break;
       }
     }
+
+    LocalDateTime localDateTime = LocalDateTime.now();
+    System.out.println("执行时间:"+localDateTime.toString());
 
     task.run();
   }

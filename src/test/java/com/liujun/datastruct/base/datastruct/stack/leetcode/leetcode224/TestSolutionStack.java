@@ -43,6 +43,8 @@ public class TestSolutionStack {
     int rsp = instance.calculate("9/3*4-5*2--1");
     Assert.assertEquals(3, rsp);
     Assert.assertEquals(322, instance.calculate("311 + 11"));
+    Assert.assertEquals(11, instance.calculate("10--1--1-1"));
+    Assert.assertEquals(8, instance.calculate("10--1-(-1-1-1)"));
     Assert.assertEquals(2, instance.calculate("1 + 1"));
 
     Assert.assertEquals(3, instance.calculate("2 - 1 + 2"));

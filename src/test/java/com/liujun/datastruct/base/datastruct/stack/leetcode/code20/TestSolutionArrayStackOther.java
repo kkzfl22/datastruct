@@ -10,13 +10,14 @@ import org.junit.Test;
  * @version 0.0.1
  * @date 2018/11/17
  */
-public class TestSolution {
+public class TestSolutionArrayStackOther {
 
-  private Solution solu = new Solution();
+  private SolutionArrayStackOther solu = new SolutionArrayStackOther();
 
   @Test
   public void testIsValid() {
 
+    check("([{() }])", true);
     check("([{ }])", true);
     check("]", false);
     check("([{ }])", true);

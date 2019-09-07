@@ -13,33 +13,32 @@ public class MyArrayStack {
 
   private final int[] stackArray;
 
-  /** 栈的大小 */
-  private final int stackSize;
+  /** 限制栈的大小 */
+  private final int maxStackSize;
 
   /** 当前栈的大小 */
-  private int currSize;
+  private int currSize = -1;
   /**
    * 进行栈的初始化操作
    *
    * @param stackSize
    */
   public MyArrayStack(int stackSize) {
-    this.stackSize = stackSize;
+    this.maxStackSize = stackSize;
     this.stackArray = new int[stackSize];
   }
 
   /**
-   * 在栈中放入一个数
+   * 栈中放入一个数
    *
    * @param value
    */
   public void push(int value) {
-
-    if (currSize > currSize) {
+    if (currSize + 1 > maxStackSize) {
       throw new IndexOutOfBoundsException("index out of bounds ");
     }
 
-    stackArray[currSize++] = value;
+    stackArray[++currSize] = value;
   }
 
   /**
@@ -47,8 +46,8 @@ public class MyArrayStack {
    *
    * @return
    */
-  public int sisze() {
-    return currSize;
+  public int size() {
+    return currSize + 1;
   }
 
   /**
@@ -57,13 +56,13 @@ public class MyArrayStack {
    * @return 取出的栈顶的元素
    */
   public int pop() {
-    int getValue = -1;
-    if (currSize > 0) {
-      getValue = stackArray[currSize - 1];
+
+    if (currSize < 0) {
+      throw new NegativeArraySizeException("index is less than 0 ");
     }
 
-    stackArray[currSize - 1] = -1;
-
+    int getValue = stackArray[currSize];
+    stackArray[currSize] = -1;
     currSize--;
 
     return getValue;

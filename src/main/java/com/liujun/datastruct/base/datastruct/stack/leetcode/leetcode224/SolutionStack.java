@@ -9,6 +9,8 @@ import java.util.function.BiFunction;
  *
  * <p>支持括号以及加减乘除法操作
  *
+ * <p>失败，主要问题在于减去负数的问题
+ *
  * @author liujun
  * @version 0.0.1
  * @date 2019/08/15
@@ -89,18 +91,45 @@ public class SolutionStack {
         valueStack.push(getNums);
         continue;
       }
-      // 添加操作符
+      // 操作符压栈操作
       else if (currItem == Oper.ADD.oper
           || Oper.MULTIPLICATION.oper == currItem
           || Oper.DIVISION.oper == currItem) {
         operStack.push(currItem);
-      } else if (currItem == Oper.MINUS.oper) {
-        if (curIndex < s.length() && dataChars[curIndex + 1] == Oper.MINUS.oper) {
-          operStack.push(Oper.ADD.oper);
-          curIndex++;
+      }
+      // 进行减法操作符的压栈
+      else if (currItem == Oper.MINUS.oper) {
+        // 如果出现在首个位置，或者括号位置，则为负数
+        if (valueStack.isEmpty() || (!operStack.isEmpty() && operStack.peek() == Oper.LEFT.oper)) {
+          // 提取连续的数字变为int类型
+          int getNums = 0;
+          while (curIndex < s.length() && Character.isDigit(dataChars[curIndex])) {
+            getNums = getNums * 10 + (dataChars[curIndex] - '0');
+            curIndex++;
+          }
+
+          valueStack.push(getNums * -1);
+          continue;
         } else {
-          operStack.add(Oper.MINUS.oper);
+          // 连续两个减号优化为加法
+          if (curIndex + 1 < s.length() && dataChars[curIndex + 1] == Oper.MINUS.oper) {
+            // 所有的减法都变成一个加上负数操作
+            curIndex++;
+            operStack.add(Oper.ADD.oper);
+          } else {
+            // 提取连续的数字变为int类型
+            int getNums = 0;
+            curIndex++;
+            while (curIndex < s.length() && Character.isDigit(dataChars[curIndex])) {
+              getNums = getNums * 10 + (dataChars[curIndex] - '0');
+              curIndex++;
+            }
+            operStack.add(Oper.ADD.oper);
+            valueStack.push(getNums * -1);
+            continue;
+          }
         }
+
       }
       // 如果当前为左括号进行压栈操作
       else if (currItem == Oper.LEFT.oper) {

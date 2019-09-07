@@ -1,7 +1,11 @@
 package com.liujun.datastruct.base.datastruct.stack.leetcode.code20;
 
+import java.util.Stack;
+
 /**
- * 解决办法
+ * 解决方案
+ *
+ * <p>通过定义枚举进行括号的配对操作
  *
  * @author liujun
  * @version 0.0.1
@@ -9,63 +13,11 @@ package com.liujun.datastruct.base.datastruct.stack.leetcode.code20;
  */
 public class Solution {
 
-  /** 标识 */
-  private static final char FLAG = 'a';
-
-  public class Stack {
-
-    /** 存储空间大小 */
-    private char[] arrays;
-
-    /** 容量 */
-    private int capacity;
-
-    /** 容量 */
-    private int size;
-
-    public Stack(int capacity) {
-      this.capacity = capacity;
-      this.arrays = new char[capacity];
-      this.size = 0;
-    }
-
-    /**
-     * 放入栈
-     *
-     * @param val
-     */
-    public void push(char val) {
-      if (size >= capacity) {
-        return;
-      }
-      this.arrays[size] = val;
-      this.size++;
-    }
-
-    /**
-     * 栈顶的元素
-     *
-     * @return
-     */
-    public char pop() {
-      if (size <= 0) {
-        return FLAG;
-      }
-      size--;
-      char val = this.arrays[size];
-
-      return val;
-    }
-  }
-
   public enum BracketEnum {
-
     /** 小括号 */
     PARENTHESES('(', ')'),
-
     /** 中括号 */
     BRACKETS('[', ']'),
-
     /** 大括号 */
     CURLYBRACES('{', '}');
 
@@ -97,20 +49,15 @@ public class Solution {
   }
 
   public boolean isValid(String s) {
-
     if (null == s) {
       return false;
     }
-
     if (s.length() == 0) {
       return true;
     }
 
     char[] braket = s.toCharArray();
-
-    int stackSize = s.length();
-    Stack leftStack = new Stack(stackSize);
-
+    Stack<Character> leftStack = new Stack();
     BracketEnum bracket = null;
 
     for (int i = 0; i < braket.length; i++) {
@@ -120,14 +67,18 @@ public class Solution {
       } else {
         // 如果为右括号，则从左侧栈中弹出一个做比较，一至则不放入
         if ((bracket = BracketEnum.right(braket[i])) != null) {
-          char left = leftStack.pop();
-          if (FLAG == left || left != bracket.left) {
+          if (!leftStack.isEmpty()) {
+            char left = leftStack.pop();
+            if (left != bracket.left) {
+              return false;
+            }
+          } else {
             return false;
           }
         }
       }
     }
 
-    return leftStack.pop() == FLAG;
+    return leftStack.isEmpty();
   }
 }
