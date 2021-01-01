@@ -81,7 +81,7 @@ public class MySkipListInt {
    */
   public boolean find(int value) {
     Node node = root;
-    // 按层级向下进宪区间搜索
+    // 按层级向下进行索引搜索
     for (int i = levelNum - 1; i >= 0; i--) {
       if (node.forward[i] != null && node.forward[i].data < value) {
         node = node.forward[i];
