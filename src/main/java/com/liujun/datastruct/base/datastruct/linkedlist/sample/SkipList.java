@@ -37,6 +37,8 @@ public class SkipList {
     Node newNode = new Node();
     newNode.data = value;
     newNode.maxLevel = level;
+
+    // 层级跳表数组
     Node update[] = new Node[level];
 
     // 将所有的层级节点都指向头节点
@@ -134,10 +136,11 @@ public class SkipList {
   }
 
   public class Node {
-    // 数据
+    /** 数据 */
     private int data = -1;
-    // 跳表节点
+    /** 跳表节点 */
     private Node forwards[] = new Node[MAX_LEVEL];
+
     private int maxLevel = 0;
 
     @Override

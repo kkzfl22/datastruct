@@ -21,7 +21,7 @@ public class BubbleSort<T> implements SortInf<T> {
 
     int dataLength = data.length;
 
-    for (int i = 0; i < dataLength; i++) {
+    for (int i = 0; i < dataLength - 1; i++) {
       boolean brakFlag = false;
       // 一次冒泡操作，至少一个元素放置到了排序之后所在的位置，比较交换的次数也会越来越少
       for (int j = 0; j < dataLength - i - 1; j++) {
