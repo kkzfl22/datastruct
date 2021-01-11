@@ -1,6 +1,5 @@
 package com.liujun.datastruct.base.datastruct.hash.myhashmap;
 
-import com.liujun.datastruct.base.datastruct.hash.myhashmap.myhashmap.MyHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 

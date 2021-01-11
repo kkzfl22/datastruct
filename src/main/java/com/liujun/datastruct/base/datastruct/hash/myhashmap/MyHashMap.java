@@ -1,4 +1,4 @@
-package com.liujun.datastruct.base.datastruct.hash.myhashmap.myhashmap;
+package com.liujun.datastruct.base.datastruct.hash.myhashmap;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
