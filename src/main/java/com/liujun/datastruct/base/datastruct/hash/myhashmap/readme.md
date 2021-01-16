@@ -1,5 +1,201 @@
-package com.liujun.datastruct.base.datastruct.hash.myhashmap;
+# 自己实现HashMap
+在平时的开发中，jdk库中的HashMap是我们在平时的开发中用的非常多的容器之一，我常常在想，自己能否也实现一个呢？以前觉得非常的复杂，但当我学习了跳表，和散列表后，我觉得这个问题我可以尝试了，于是就开始了自己实现MyHashMap之旅。
 
+## 1. 需求定义
+
+既然要实现一个HashMap，那还是先需求吧。
+
+```java
+public class MyHashMap<K, V> {
+	public MyHashMap(int capacity){}
+    public void put(K key, V value) {}
+    public V get(K key) {
+        return null;
+    }
+    public void remove(K key){}
+}
+```
+1. 能够支持数据最基本的操作。包括添加一个键值对，根据key获取值，以及按key删除值三个基本的方法。
+2. 能够支持动态的扩容。扩容每次不能占用太多的时间，以免单个操作等待时间过长。
+4. 当遇到极端情况（hash到一个槽）时间复杂度也不能退化为O(n)。
+
+   
+## 2. 实现分析
+针对以上的需求，可以归纳为这几个问题
+1. 如何设计散列函数？
+2. 装载因子过大怎么办？
+3. 如何避免低效的扩容？
+4. 链表冲突的问题解决？
+
+
+
+### 如何设计散列函数？
+
+散列函数设计的好坏决定散列冲突的概率，也决定了散列表的性能。什么样的散列函数才是一个好的散列函数？
+
+1. 散列函数的设计不能太复杂。复杂的函数会消耗大量的计算资源，间接影响了散列表性能。
+
+2. 散列函数生成的值要尽可能的随机并且均匀分布。这样能才避免或者最小化冲突，即使冲突，散列到每个槽内的数据也会比较的平均。不会出现严重的数据倾斜问题。
+
+实际上散列方法有很多，这里采用的是HashMap中的使用散列函数.
+```java
+  private int hash(K key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+  }
+```
+
+
+
+### 装载因子过大怎么办？
+
+散列表的装载因子 = 装入散列表中的元素个数 / 散列表的长度  
+
+装载因子越大说明空闲位置越少，冲突越多，散列表的性能会下降。
+
+针对目前的需求这是一个动态的散列表，数据的集合是变化 的，我们事先根本无法预估出数据个数，我们也无法事先申请一个足够大的散列表，装载因子就会慢慢的变大，当装载因子大到一定程序后，散列冲突就会变得不可接受。针以地这个问题该如何处理？
+
+当装载因子过大的时候，可以采用扩容的办法来解决这个问题。重新申请一个更大的散列表。将数据搬移到这个新的散列表中，假如每次扩容都申请一个原来散列表大小2倍的空间，如果原来散列表的装载因子是1，经过扩容后，新的散列表的装载因子就变成了0.5
+
+
+
+### 如何避免低效的扩容？
+
+在大部分情况，动态扩容的散列表插入都很快，但在特殊情况下，当装载因子已经到阈值，需要先扩容，再将原有的数据搬移到新的散列表中，再插入数据。这个时候就会很慢。甚至无法接受的程度。
+
+举个例子，假如现在的散列表当前大小为10万个大小，想要扩容为原来的2倍大小，那需要新申请一个20万个大小的散列表，然后对这10万个数据进行重新计算hash，将数据保存到新的散列表中，并且将原散列表中的数据删除，这个不用计算了，这个听起来就非常的耗时。那如何来解决这个问题呢？
+
+为了解决一次性扩容耗时过多的问题。可以将扩容操作放到插入操作中进行，分批完成数据的搬移。当装载因子阈值到达时，只申请新的空间，但并不搬移老的数据到新的散列表中。当有新的数据要插入时，将新数据插入到散列表中，并从老的散列表中拿出几人数据放到散列表中。每插入一个数据，重复这一过程。经过多次的插入手，老的散列表中的数据，就被一点一点的搬移到了，新的散列表中。这样没有了一次性搬移操作，插入操作就会变得很快。
+
+但这样操作也会带来新的问题？由于现在存在两个散列表，新散列表与旧散列表。那查询怎么办？
+
+针对这个问题，我们可以分开查询两个散列表，优先从新的散列表开始搜索。当数据被搜索到，直接返回，搜索不到再从旧在的散列表中去搜索。
+
+通过这样均摊的办法，将一次扩容的代价，均摊到了多次插入操作。就避免了一次性扩容过多的情况。这样的实现方式下，任何情况下，插入的数据时间复杂度都是O(1）。
+
+
+
+### 链表冲突的问题解决？
+
+由于散列冲突是一定会存在的。那如何解决散列冲突？
+
+解决链表冲突办法有多种，常用的有两种，分别为开放寻址法和链表法。
+
+这里采用的链表法，但采用链表法在极端情况下，操作的时间复杂度会退化为O(n)，这里我加入了跳表来解决这个问题.
+
+那来看看链表与跳表配合解决这个问题的：
+
+
+
+来一起看看这整体一个存储的结构吧：
+
+![](D:\doc\博客\数据结构与算法\散列表\myhashMap的整体结构.png)
+
+
+
+
+
+在插入数据时将检查当前槽内的数据个数，小于8个则为链表，当大于8个时，则将链表转换为跳表，并将链表中的数据搬移到跳表中。
+
+这就是采用链表与跳表结合的方法来解决散列冲突的问题，这样当一个数据插入时，就算遇到极遇的情况，也不会退化成O(n)，而是O(logn)，那为什么不将所有的都切换为跳表呢？
+
+这是因为跳表不仅需要额外的空间，也是需要对操作进行遍历，当数据个数很少时，其数据量很少时，没有任何的优势。当数据量大了以后，跳表的优势才能发挥。采用跳表，又带来了新的问题了，那就是跳表的高度？
+
+由于数据不断的被插入，如果跳表的高度是不变的情况下，时间复杂度就会退化为O(n/m)，这样就需要保证跳表的高度随着数据增加而增加。同样的当数据减少后进行跳表层级的减少。那具体怎么解决这个问题呢？
+
+首先我是通过定义阈值来解决的，添加跳表层级的阈值，这个值是来的呢？跳表的高度是随机分布的，它能证在平均情况下的时间复杂度为O(logn),先来看看跳表的随机函数吧！
+
+```java
+private int randomLevel() {
+    int level = 1;
+    for (int i = 1; i < MAX_LEVEL; ++i) {
+      if (random.nextInt() % 2 == 1) {
+        level++;
+      }
+    }
+
+    return level;
+  }
+```
+
+可以看出这个随机函数与跳表的最大高度的直接关系，最大高度定义跳表随机能到达最大层级数。这样当跳表的节点增加到某个阈值时，我们以阈值来计算下跳表的高度即可得到最大值层级高度。那来看看计算跳表的高度的方法吧：
+
+```java
+ /**
+   * 计算log2n
+   *
+   * @param size
+   * @return
+   */
+  public int powTwo(int size) {
+    int powNum = 1;
+    int low = 0, mid, high = size;
+
+    while (low <= high && high >= 4) {
+      if ((high - low) % 2 != 0) {
+        return -1;
+      }
+
+      mid = low + (high - low) / 2;
+      if (mid % 2 == 0) {
+        powNum++;
+        high = mid;
+      }
+      // 如果当前不能被2整除，则说明当前非2的幂
+      else {
+        return -1;
+      }
+    }
+
+    return powNum;
+  }
+```
+
+这是采用二分法计算的以2为底的n的对数。
+
+这样跳表的高度可以计算了，那跳表的增加的阈值如何计算呢？这里正常来说可以直接使用以2为底，以跳表的调度为指数计算即可，但在阅读jdk8源码时，发现一个更牛的计算方法，可直接用这个方法更好。
+
+```java
+ /**
+   * The maximum capacity, used if a higher value is implicitly specified by either of the
+   * constructors with arguments. MUST be a power of two <= 1<<30.
+   */
+  private static final int MAXIMUM_CAPACITY = 1 << 30;
+  
+ /** Returns a power of two size for the given target capacity. */
+  static final int tableSizeFor(int cap) {
+    int n = cap - 1;
+    n |= n >>> 1;
+    n |= n >>> 2;
+    n |= n >>> 4;
+    n |= n >>> 8;
+    n |= n >>> 16;
+    return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+  }
+```
+
+这是计算跳表高度以及计算跳表层级的阈值。有了增加跳表层级，那需要减少跳表的层级吗？
+
+如果不减少层级会有影响吗？这个可以想像下，当数据量扩容到1024个节点后，然后再执行删除，一直删除到只有32个顶点，如果跳表的层级还是10层？这时候就会有一些多余的遍历在这个跳表上，所以需要维护跳表的高度与跳表节点之间的一个平衡。这样也得定义一个减少跳表层级的阈值。这个计算过程就同增加跳表层级类似了。
+
+来看看具体是如何被计算的吧
+
+```java
+          // 计算增加层级的阈值
+          skipThresholdExpand = tableSizeFor(nodes[nodeIndex].size + 2);
+          // 计算减少层级的阈值
+          skipThresholdShrink = tableSizeFor(nodes[nodeIndex].size - 2);
+```
+
+
+
+
+
+## 3. 最终的代码实现
+
+最后还是把自己实现的HashMap的完整代码贴出来：
+
+```java
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -18,7 +214,6 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * <p>6. 当数据数据搬移使用分批搬移的策略，将搬移的压力分担到多次操作中。
  *
- * @author liujun
  * @version 0.0.1
  */
 public class MyHashMap<K, V> {
@@ -754,3 +949,76 @@ public class MyHashMap<K, V> {
     return removeFlag;
   }
 }
+```
+
+
+
+这就是我自己实现的一个HashMap。与java原生的HashMap相比，性能相差无几。这简单的做了一个单元测试的对比。
+
+```java
+public class TestMyHashMapCompare {
+
+  private static final int MAX_SIZE = 2999999;
+
+  @Test
+  public void testHashMap() {
+
+    HashMap instanceMap = new HashMap();
+    for (int i = 0; i < MAX_SIZE; i++) {
+      Data item = new Data(i, "i" + i);
+      instanceMap.put(item, "name:" + i);
+    }
+
+    for (int i = MAX_SIZE - 1; i > 0; i--) {
+      Data item = new Data(i, "i" + i);
+      Object value = instanceMap.get(item);
+      Assert.assertEquals(value, "name:" + i);
+      instanceMap.remove(item);
+    }
+  }
+
+  /** 自己实现的HashMap测试 */
+  @Test
+  public void testHashMapMe() {
+
+    MyHashMap instance = new MyHashMap();
+
+    for (int i = 0; i < MAX_SIZE; i++) {
+      Data item = new Data(i, "i" + i);
+      instance.put(item, "name:" + i);
+    }
+
+    for (int i = MAX_SIZE - 1; i > 0; i--) {
+      Data item = new Data(i, "i" + i);
+      Object value = instance.get(item);
+      Assert.assertEquals(value, "name:" + i);
+      instance.remove(item);
+    }
+  }
+}
+```
+
+
+
+来看下对比结果:
+
+![](D:\doc\博客\数据结构与算法\散列表\myhashMap对比测试结果.png)
+
+
+
+这个结果可以看作与java原生版本的HashMap相关无几。甚至可能快个几秒。但这里仅是简单的一个测试。并不能证明我实现的Map比java原生的好。
+
+
+
+## 总结
+
+
+
+我通过将自己实现一个散列表。将散列表中相关的知识做了一个实践。关于散列表，需要重点掌握散列函数、装载因子、动态扩容策略、散列冲突的解决。通过这些实践与学习能更好的理解HashMap这一工业级的散列表的实现。当然java版本的HashMap使用红黑树来做的动态数据结构。
+
+
+
+
+
+
+

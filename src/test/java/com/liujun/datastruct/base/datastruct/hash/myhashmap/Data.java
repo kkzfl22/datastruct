@@ -23,7 +23,7 @@ public class Data implements Comparable<Data> {
 
   @Override
   public int hashCode() {
-    return id%8;
+    return id % 4;
   }
 
   @Override
@@ -46,6 +46,8 @@ public class Data implements Comparable<Data> {
 
     return 0;
   }
+
+
 
   @Override
   public String toString() {

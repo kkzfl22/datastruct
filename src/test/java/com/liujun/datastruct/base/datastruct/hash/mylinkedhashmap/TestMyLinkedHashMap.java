@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * 测试linkedHashMap
@@ -23,6 +24,24 @@ public class TestMyLinkedHashMap {
     instance.put(5, 5);
 
     Iterator<Integer> dataIter = instance.iterator();
+
+    Assert.assertEquals((Integer) 1, dataIter.next());
+    Assert.assertEquals((Integer) 2, dataIter.next());
+    Assert.assertEquals((Integer) 3, dataIter.next());
+    Assert.assertEquals((Integer) 4, dataIter.next());
+    Assert.assertEquals((Integer) 5, dataIter.next());
+  }
+
+  @Test
+  public void linkedHashMapTest() {
+    LinkedHashMap<Integer, Integer> instance = new LinkedHashMap<>();
+    instance.put(1, 1);
+    instance.put(2, 2);
+    instance.put(3, 3);
+    instance.put(4, 4);
+    instance.put(5, 5);
+
+    Iterator<Integer> dataIter = instance.values().iterator();
 
     Assert.assertEquals((Integer) 1, dataIter.next());
     Assert.assertEquals((Integer) 2, dataIter.next());
@@ -101,6 +120,44 @@ public class TestMyLinkedHashMap {
       Iterator<Integer> dataIter = instance.iterator();
       for (int i = 0; i < size; i++) {
         Assert.assertEquals((Integer) i, dataIter.next());
+      }
+    }
+  }
+
+  /** 测试冲突 */
+  @Test
+  public void testRemove() {
+    int size = 10;
+
+    MyLinkedHashMap<Integer, String> instance = new MyLinkedHashMap(16, size);
+
+    for (int i = 0; i < size; i++) {
+      instance.put(i, "name:" + i);
+    }
+
+    instance.remove(1);
+    instance.remove(3);
+    instance.remove(5);
+
+    Iterator<Integer> dataIter = instance.iterator();
+    for (int i = 0; i < size; i++) {
+      if (dataIter.hasNext()) {
+        System.out.println(dataIter.next());
+      }
+      // Assert.assertEquals((Integer) i, dataIter.next());
+    }
+    System.out.println("--------------");
+
+    System.out.println("out:" + instance.get(7));
+
+    System.out.println("out:" + instance.get(9));
+    System.out.println("out:" + instance.get(8));
+    System.out.println("out:" + instance.get(2));
+
+    dataIter = instance.iterator();
+    for (int i = 0; i < size; i++) {
+      if (dataIter.hasNext()) {
+        System.out.println(dataIter.next());
       }
     }
   }

@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 进行自定义的MyHashMap测试
@@ -89,7 +90,6 @@ public class TestMyHashMap {
     for (int i = maxSize - 1; i > 0; i--) {
       Data item = new Data(i, "i" + i);
       Object value = instance.get(item);
-      // System.out.println(value);
       Assert.assertEquals(value, "name:" + i);
       instance.remove(item);
     }
@@ -117,5 +117,21 @@ public class TestMyHashMap {
     Data item2 = new Data(0, "i" + 0);
     System.out.println(item1.hashCode());
     System.out.println(item2.hashCode());
+  }
+
+  @Test
+  public void testCapFor() {
+    int number = 512;
+    for (int i = 0; i < 20000; i++) {
+      System.out.print((hash(ThreadLocalRandom.current().nextInt()) & (number - 1)) + "\t");
+      if (i % 10 == 0) {
+        System.out.println();
+      }
+    }
+  }
+
+  static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
   }
 }
