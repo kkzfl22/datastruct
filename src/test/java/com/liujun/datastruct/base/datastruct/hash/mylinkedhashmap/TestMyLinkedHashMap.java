@@ -3,6 +3,7 @@ package com.liujun.datastruct.base.datastruct.hash.mylinkedhashmap;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -160,5 +161,11 @@ public class TestMyLinkedHashMap {
         System.out.println(dataIter.next());
       }
     }
+  }
+
+  @Test
+  public void capacityCount() {
+    HashMap[] data = new HashMap[5];
+    System.out.println(data.length);
   }
 }
