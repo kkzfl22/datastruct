@@ -123,10 +123,10 @@ public class MySkipListHashMap<K, V> {
   }
 
   /**
-   * 放入一个数据
+   * 添加一个成员对象
    *
-   * @param key
-   * @param value
+   * @param key 键信息
+   * @param value 值信息
    */
   public void put(K key, V value) {
     this.resize();
@@ -145,10 +145,22 @@ public class MySkipListHashMap<K, V> {
       // 找到拉链的最后一个节点，将节点加入
       HashSkipNode tmpLastNode = tab[sizeIndex];
       while (tmpLastNode.hnext != null) {
+        // key查找
+        if (tmpLastNode.hnext.key.equals(key)) {
+          break;
+        }
         tmpLastNode = tmpLastNode.hnext;
       }
-      // 将最后节点加入
-      tmpLastNode.hnext = addSkipNode(hashcode, key, value);
+
+      // 当节点不为空，说明数据存在，直接覆盖即可
+      if (null != tmpLastNode.hnext) {
+        tmpLastNode.hnext.value = value;
+      }
+      // 否则将数据加入
+      else {
+        // 将最后节点加入
+        tmpLastNode.hnext = addSkipNode(hashcode, key, value);
+      }
     }
 
     // 数据搬移操作
@@ -267,10 +279,10 @@ public class MySkipListHashMap<K, V> {
   }
 
   /**
-   * 获取一个数据
+   * 按照键来查找一个成员对象
    *
-   * @param key
-   * @return
+   * @param key 键信息
+   * @return 数据
    */
   public V get(K key) {
     HashSkipNode<K, V> valueItem = this.getPrevNode(key);
@@ -282,7 +294,7 @@ public class MySkipListHashMap<K, V> {
   }
 
   /**
-   * 执行区间搜索
+   * 按照值区间查找数据，比如查找用户年龄20-30的成员对象。
    *
    * @param start 开始值
    * @param end 结束值
@@ -358,7 +370,7 @@ public class MySkipListHashMap<K, V> {
   }
 
   /**
-   * 移除一个数据
+   * 按照键来删除一个成员对象
    *
    * @param key
    */
@@ -386,6 +398,7 @@ public class MySkipListHashMap<K, V> {
     HashSkipNode<K, V> rootNodeTmp = rootNode;
     for (int i = currHigh - 1; i >= 0; i--) {
       while (rootNodeTmp.forward[i] != null
+          && rootNodeTmp.forward[i].key == currNode.key
           && ((Comparable) rootNodeTmp.forward[i].value).compareTo(currNode.value) == -1) {
         rootNodeTmp = rootNodeTmp.forward[i];
       }
@@ -443,7 +456,7 @@ public class MySkipListHashMap<K, V> {
   }
 
   /**
-   * 获取迭代器
+   * 按照值做有序的迭代输出
    *
    * @return
    */

@@ -15,4 +15,9 @@ public class Symbol {
   public static final String POINT = ".";
 
   public static final String LINE = "\n";
+
+  /**
+   * 下划线
+   */
+  public static final String UNLINE = "_";
 }

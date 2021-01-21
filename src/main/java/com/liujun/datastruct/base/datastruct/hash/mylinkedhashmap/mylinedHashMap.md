@@ -1,5 +1,5 @@
 # 自己实现一个LinkedHashMap
-在上一了章节，我实现一个MyHashMap,那今天继续来实现一个LinkedHashMap，linked相对于HashMap保存了数据插入的顺序，不过想想觉得还是挺神的，HashMap我们都知道，通过散列函数，将数据分散到不同的槽中，再从槽中去读取数据。这一过程听起来就是无法保证顺序的。那要如何保证插入的顺序呢？
+在上一了章节，我实现一个MyHashMap,那今天继续来实现一个LinkedHashMap，LinkedHashMap相对于HashMap保存了数据插入的顺序，觉得神奇的，HashMap我们都知道，通过散列函数，将数据分散到不同的槽中，再从槽中去读取数据。这一过程听起来就是无法保证顺序的。那要如何保证插入的顺序呢？
 
 其实在LinkedHashMap中，加了下一个双向链表。
 
