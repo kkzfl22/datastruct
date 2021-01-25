@@ -109,8 +109,8 @@ public class MultFileWrite {
   }
 
   public void close() {
-    IOUtils.Close(buffedWrite);
-    IOUtils.Close(writer);
+    IOUtils.close(buffedWrite);
+    IOUtils.close(writer);
   }
 
   private boolean maxDirSize() {

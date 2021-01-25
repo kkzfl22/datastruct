@@ -1,4 +1,4 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@ public class IOUtils {
    * 关闭操作
    * @param stream
    */
-  public static void Close(Closeable stream) {
+  public static void close(Closeable stream) {
     if (null != stream) {
       try {
         stream.close();

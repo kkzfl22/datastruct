@@ -79,8 +79,8 @@ public class MultFileReader {
   }
 
   public void close() {
-    IOUtils.Close(bufferedReader);
-    IOUtils.Close(reader);
+    IOUtils.close(bufferedReader);
+    IOUtils.close(reader);
   }
 
   /**

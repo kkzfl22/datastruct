@@ -1,10 +1,10 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare;
 
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity.DataCompareRsp;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity.DataCompareValueInfo;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity.UpdateObjectEntity;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity.DataCompareRsp;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity.DataCompareValueInfo;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity.UpdateObjectEntity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

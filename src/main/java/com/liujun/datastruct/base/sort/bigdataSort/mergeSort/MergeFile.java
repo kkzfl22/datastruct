@@ -207,8 +207,8 @@ public class MergeFile {
       } catch (IOException e) {
         e.printStackTrace();
       } finally {
-        IOUtils.Close(buffered);
-        IOUtils.Close(reader);
+        IOUtils.close(buffered);
+        IOUtils.close(reader);
       }
     }
   }
@@ -223,8 +223,8 @@ public class MergeFile {
   }
 
   public void close() {
-    IOUtils.Close(bufferedWriter);
-    IOUtils.Close(fileWriter);
+    IOUtils.close(bufferedWriter);
+    IOUtils.close(fileWriter);
   }
 
   /**

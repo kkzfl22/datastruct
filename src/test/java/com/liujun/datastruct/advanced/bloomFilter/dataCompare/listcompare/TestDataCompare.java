@@ -1,9 +1,11 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare;
 
 import com.config.Symbol;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity.DataCompareRsp;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity.DataCompareValueInfo;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity.UpdateObjectEntity;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.CompareKeyInterface;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.DataCompare;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity.DataCompareRsp;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity.DataCompareValueInfo;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity.UpdateObjectEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

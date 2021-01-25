@@ -108,8 +108,8 @@ public class BigFileTopN {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedReader);
-      IOUtils.Close(fileReader);
+      IOUtils.close(bufferedReader);
+      IOUtils.close(fileReader);
     }
   }
 

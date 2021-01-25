@@ -55,8 +55,8 @@ public class PropertiesUtils {
       } catch (IOException e) {
         throw new RuntimeException(e);
       } finally {
-        IOUtils.Close(read);
-        IOUtils.Close(in);
+        IOUtils.close(read);
+        IOUtils.close(in);
       }
     }
   }

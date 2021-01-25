@@ -95,8 +95,8 @@ public class FileSort {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedReader);
-      IOUtils.Close(reader);
+      IOUtils.close(bufferedReader);
+      IOUtils.close(reader);
     }
 
     return resultList;
@@ -141,8 +141,8 @@ public class FileSort {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(buffedWrite);
-      IOUtils.Close(outWrite);
+      IOUtils.close(buffedWrite);
+      IOUtils.close(outWrite);
     }
   }
 }

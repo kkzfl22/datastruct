@@ -55,8 +55,8 @@ public class FileReaderProc {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedReader);
-      IOUtils.Close(fileReader);
+      IOUtils.close(bufferedReader);
+      IOUtils.close(fileReader);
     }
   }
 
@@ -82,8 +82,8 @@ public class FileReaderProc {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedReader);
-      IOUtils.Close(fileReader);
+      IOUtils.close(bufferedReader);
+      IOUtils.close(fileReader);
     }
   }
 

@@ -1,4 +1,4 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare;
 
 /**
  * 对比key

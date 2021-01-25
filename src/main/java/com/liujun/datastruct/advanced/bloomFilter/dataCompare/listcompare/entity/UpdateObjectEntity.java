@@ -1,4 +1,4 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare.entity;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.listcompare.entity;
 
 /**
  * 数据修改的对象

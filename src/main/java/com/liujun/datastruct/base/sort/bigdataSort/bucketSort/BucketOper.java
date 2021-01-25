@@ -104,8 +104,8 @@ public class BucketOper {
 
   public void close() {
     for (int i = 0; i < CACHE.size(); i++) {
-      IOUtils.Close(CACHE.get(i).getBufferWrite());
-      IOUtils.Close(CACHE.get(i).getWrite());
+      IOUtils.close(CACHE.get(i).getBufferWrite());
+      IOUtils.close(CACHE.get(i).getWrite());
     }
   }
 
@@ -160,8 +160,8 @@ public class BucketOper {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(buffered);
-      IOUtils.Close(read);
+      IOUtils.close(buffered);
+      IOUtils.close(read);
     }
 
     return list;
@@ -215,8 +215,8 @@ public class BucketOper {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(outputStream);
-      IOUtils.Close(inputStream);
+      IOUtils.close(outputStream);
+      IOUtils.close(inputStream);
     }
   }
 
@@ -242,8 +242,8 @@ public class BucketOper {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedWriter);
-      IOUtils.Close(outWrite);
+      IOUtils.close(bufferedWriter);
+      IOUtils.close(outWrite);
     }
   }
 

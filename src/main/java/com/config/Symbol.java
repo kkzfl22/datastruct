@@ -16,8 +16,15 @@ public class Symbol {
 
   public static final String LINE = "\n";
 
-  /**
-   * 下划线
-   */
+  /** 下划线 */
   public static final String UNLINE = "_";
+
+  /** 逗号 */
+  public static final String COMMA = ",";
+
+  /** 空字符串 */
+  public static final String EMPTY = "";
+
+  /** 减号 */
+  public static final String MINUS = "-";
 }

@@ -51,8 +51,8 @@ public class FileCreate {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedWriter);
-      IOUtils.Close(fileWriter);
+      IOUtils.close(bufferedWriter);
+      IOUtils.close(fileWriter);
     }
   }
 

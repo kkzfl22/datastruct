@@ -83,8 +83,8 @@ public class PartitionFile {
   public void closeOutput(PartitionBusi[] partitionBusi) {
 
     for (int i = 0; i < partitionBusi.length; i++) {
-      IOUtils.Close(partitionBusi[i].getBufferedWriter());
-      IOUtils.Close(partitionBusi[i].getFileReader());
+      IOUtils.close(partitionBusi[i].getBufferedWriter());
+      IOUtils.close(partitionBusi[i].getFileReader());
     }
   }
 
@@ -108,7 +108,7 @@ public class PartitionFile {
    * @param file 文件信息
    */
   public void closeReader(PartitionBusi file) {
-    IOUtils.Close(file.getFileReader());
-    IOUtils.Close(file.getBufferReader());
+    IOUtils.close(file.getFileReader());
+    IOUtils.close(file.getBufferReader());
   }
 }

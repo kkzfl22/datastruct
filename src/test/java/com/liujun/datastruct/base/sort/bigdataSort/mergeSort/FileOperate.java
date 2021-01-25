@@ -139,8 +139,8 @@ public class FileOperate {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      IOUtils.Close(bufferedReader);
-      IOUtils.Close(reader);
+      IOUtils.close(bufferedReader);
+      IOUtils.close(reader);
     }
 
     return readNum;
