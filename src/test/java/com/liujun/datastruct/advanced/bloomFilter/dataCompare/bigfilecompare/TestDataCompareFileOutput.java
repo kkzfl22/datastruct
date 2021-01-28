@@ -1,7 +1,7 @@
 package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare;
 
 import com.config.Symbol;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.compare.FileDataCompareRsp;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.compare.DataCompareFileOutput;
 import com.liujun.datastruct.utils.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,17 +12,17 @@ import org.junit.Test;
  * @author liujun
  * @version 0.0.1
  */
-public class TestFileDataCompareRsp {
+public class TestDataCompareFileOutput {
 
   private static final String TEST_OUTPUT_PATH = "dataCompare";
 
   /** 测试操作 */
   @Test
   public void testRspData() {
-    String path = TestFileDataCompareRsp.class.getClassLoader().getResource(".").getPath();
+    String path = TestDataCompareFileOutput.class.getClassLoader().getResource(".").getPath();
 
-    FileDataCompareRsp compareInstance =
-        new FileDataCompareRsp(path + Symbol.PATH + TEST_OUTPUT_PATH);
+    DataCompareFileOutput compareInstance =
+        new DataCompareFileOutput(path + Symbol.PATH + TEST_OUTPUT_PATH);
 
     // 执行文件打开
     compareInstance.openWriteFile();
@@ -34,7 +34,7 @@ public class TestFileDataCompareRsp {
       compareInstance.writeUpdateAfterData("this update after");
       compareInstance.writeDeleteData("this delete");
 
-      compareInstance.closeWrite();
+      compareInstance.close();
 
       Assert.assertEquals(
           "this is add\n", FileUtils.readLittleFile(compareInstance.getAddFilePath()));
@@ -43,14 +43,14 @@ public class TestFileDataCompareRsp {
       Assert.assertEquals(
           "this update after\n", FileUtils.readLittleFile(compareInstance.getUpdAfterFilePath()));
       Assert.assertEquals(
-          "this delete\n", FileUtils.readLittleFile(compareInstance.getDelFileName()));
+          "this delete\n", FileUtils.readLittleFile(compareInstance.getDeleteFilePath()));
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      FileUtils.deleteFile(compareInstance.getAddFilePath());
+      FileUtils.deleteFile(compareInstance.getAddFileName());
       FileUtils.deleteFile(compareInstance.getUpdBeforeFilePath());
       FileUtils.deleteFile(compareInstance.getUpdAfterFilePath());
-      FileUtils.deleteFile(compareInstance.getDelFileName());
+      FileUtils.deleteFile(compareInstance.getDeleteFilePath());
     }
   }
 }

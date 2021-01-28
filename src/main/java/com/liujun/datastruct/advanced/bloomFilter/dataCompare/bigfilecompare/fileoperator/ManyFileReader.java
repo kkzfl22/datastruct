@@ -1,14 +1,15 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.updfile;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator;
 
 import com.liujun.datastruct.utils.FileUtils;
 import com.liujun.datastruct.utils.IOUtils;
 
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 多文件读取操作
@@ -17,6 +18,9 @@ import java.io.IOException;
  * @version 0.0.1
  */
 public class ManyFileReader implements AutoCloseable {
+
+  /** 每次读取512条记录 */
+  private static final int BATCH_READ_LIST = 1024;
 
   /** 基础的文件路径 */
   private String path;
@@ -56,13 +60,29 @@ public class ManyFileReader implements AutoCloseable {
       if (nextFile) {
         dataLine = this.bufferedReader.readLine();
       }
-      // 当切换失败，说明已经结束，则关闭文件通道
-      else {
-        this.close();
-      }
     }
 
     return dataLine;
+  }
+
+  /**
+   * 批量读取数据
+   *
+   * @return 批量数据集
+   * @throws IOException 异常信息
+   */
+  public List<String> readLineList() throws IOException {
+    List<String> dataList = new ArrayList<>(BATCH_READ_LIST);
+
+    for (int i = 0; i < BATCH_READ_LIST; i++) {
+      String dataLine = this.readLine();
+      if (null != dataLine) {
+        dataList.add(dataLine);
+      } else {
+        break;
+      }
+    }
+    return dataList;
   }
 
   /**
@@ -71,14 +91,14 @@ public class ManyFileReader implements AutoCloseable {
    * @return
    */
   private boolean nextFile() {
-    // 1,当一个文件读取完成后，执行对文件的关闭操作
-    this.close();
     // 切换到一个文件索引
     this.readIndex++;
     // 当文件读取索引大于文件个数时，执行退出
     if (this.readIndex >= this.fileData.length) {
       return false;
     }
+    // 1,当一个文件读取完成后，执行对文件的关闭操作
+    this.close();
     // 切换成功后，打开下一个文件通道
     this.openFile();
 
@@ -97,6 +117,11 @@ public class ManyFileReader implements AutoCloseable {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
+  }
+
+  /** 文件再次重新读取 */
+  public void reload() {
+    this.readIndex = 0;
   }
 
   /** 文件关闭操作 */

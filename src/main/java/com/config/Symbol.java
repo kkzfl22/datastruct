@@ -27,4 +27,7 @@ public class Symbol {
 
   /** 减号 */
   public static final String MINUS = "-";
+
+  /** 右尖括号 */
+  public static final String RIGHT_FLAG = ">";
 }

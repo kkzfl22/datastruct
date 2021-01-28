@@ -1,9 +1,10 @@
 package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.compare;
 
-import com.google.common.hash.BloomFilter;
-import com.google.common.hash.Funnels;
+import com.config.Symbol;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.entity.DataCompareRsp;
+import com.liujun.datastruct.utils.FileUtils;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,62 +15,45 @@ import java.util.List;
  */
 public class DataCompare<V> {
 
-  /** 占用512K的空间 */
-  private static final int DEFAULT_SIZE = 4194304;
+  public static final String SRC_BLOOM_PATH = "bloom_src";
 
-  /** 出现冲突的概率4千分之一 */
-  private static final double DEFAULT_FPP = 0.001;
+  public static final String TARGET_BLOOM_PATH = "bloom_target";
 
   /** 原始数据填充布隆过滤器 */
-  private final BloomFilter<String> srcBloomFilter;
+  private final BoomFilterManager srcBloomFilter;
 
   /** 目标数据填充布隆过滤器 */
-  private final BloomFilter<String> targetBloomFilter;
+  private final BoomFilterManager targetBloomFilter;
 
   /** 相关生成对比函数信息 */
   private final BigCompareKeyInf<V> compareKeyInterface;
 
-  /** 数据对比的结果存储 */
-  private final FileDataCompareRsp dataCompRsp;
-
   /** java行与对象之彰的转换操作 */
   private final DataParseInf<V> dataParse;
 
-  /** 修改之前的行计数 */
-  private long updateNum;
-
-  /** 统计总文件大小 */
-  private long updateSumSize;
+  /** 保存数据的目录 */
+  private final String savePath;
 
   public DataCompare(
-      int size,
-      double fpp,
       BigCompareKeyInf<V> compareKeyInterface,
-      FileDataCompareRsp dataCompRsp,
-      DataParseInf<V> dataParse) {
-    this.srcBloomFilter =
-        BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), size, fpp);
-    this.targetBloomFilter =
-        BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), size, fpp);
+      DataParseInf<V> dataParse,
+      long srcDataNum,
+      long targetDataNum,
+      String savePath) {
+    this.srcBloomFilter = new BoomFilterManager(srcDataNum);
+    this.targetBloomFilter = new BoomFilterManager(targetDataNum);
     this.compareKeyInterface = compareKeyInterface;
-    this.dataCompRsp = dataCompRsp;
     this.dataParse = dataParse;
-
-    // 打开对比结果文件通道
-    dataCompRsp.openWriteFile();
+    this.savePath = savePath;
   }
 
-  /**
-   * 获取实例对象
-   *
-   * @param compareKeyInterface
-   * @return
-   */
   public DataCompare(
-      BigCompareKeyInf compareKeyInterface,
-      FileDataCompareRsp dataCompRsp,
-      DataParseInf<V> dataParse) {
-    this(DEFAULT_SIZE, DEFAULT_FPP, compareKeyInterface, dataCompRsp, dataParse);
+      BigCompareKeyInf<V> compareKeyInterface, DataParseInf<V> dataParse, String savePath) {
+    this.compareKeyInterface = compareKeyInterface;
+    this.dataParse = dataParse;
+    this.savePath = savePath;
+    this.srcBloomFilter = this.loadSrc();
+    this.targetBloomFilter = this.loadTarget();
   }
 
   /**
@@ -77,8 +61,8 @@ public class DataCompare<V> {
    *
    * @param data
    */
-  public void putSrcList(List<V> data) {
-    this.putDataList(srcBloomFilter, data);
+  public void putSrcData(V data) {
+    this.putData(srcBloomFilter, data);
   }
 
   /**
@@ -86,8 +70,30 @@ public class DataCompare<V> {
    *
    * @param data
    */
-  public void putTargetList(List<V> data) {
-    this.putDataList(targetBloomFilter, data);
+  public void putTargetData(V data) {
+    this.putData(targetBloomFilter, data);
+  }
+
+  /**
+   * 将一批数据放入到布隆过滤器中
+   *
+   * @param dataList
+   */
+  public void putSrcList(List<V> dataList) {
+    for (V itemData : dataList) {
+      this.putData(srcBloomFilter, itemData);
+    }
+  }
+
+  /**
+   * 将一批数据目标数据放入到布隆过滤器中
+   *
+   * @param dataList 数据集
+   */
+  public void putTargetList(List<V> dataList) {
+    for (V itemData : dataList) {
+      this.putData(targetBloomFilter, itemData);
+    }
   }
 
   /**
@@ -96,98 +102,118 @@ public class DataCompare<V> {
    * @param bloomFilter
    * @param data
    */
-  private void putDataList(BloomFilter<String> bloomFilter, List<V> data) {
-    if (null == data || data.isEmpty()) {
+  private void putData(BoomFilterManager bloomFilter, V data) {
+    if (null == data) {
       return;
     }
     // 1,将数据放入到布隆过滤器中
-    for (V dataItem : data) {
-      this.dataPutBloomFilterOne(bloomFilter, dataItem);
-    }
+    bloomFilter.put(compareKeyInterface.getKey(data));
+    bloomFilter.put(compareKeyInterface.getKeyMany(data));
   }
 
   /**
-   * 单项数据增加至布隆过滤器中
+   * 对比目标数据集信息
    *
-   * @param bloomFilter 布隆过滤器
-   * @param dataItem 数据信息
+   * @param dataList 数据集
+   * @throws IOException
    */
-  private void dataPutBloomFilterOne(BloomFilter<String> bloomFilter, V dataItem) {
-    if (null == dataItem) {
-      return;
+  public DataCompareRsp compareTargetList(List<V> dataList) {
+
+    DataCompareRsp rsp = new DataCompareRsp();
+    // 初始化原始结果集合
+    rsp.initCompareSrc();
+    // 数据遍历对比操作
+    for (V dataLine : dataList) {
+      this.compareTarget(dataLine, rsp);
     }
-    bloomFilter.put(compareKeyInterface.getKey(dataItem));
-    bloomFilter.put(compareKeyInterface.getKeyMany(dataItem));
+    return rsp;
   }
 
   /**
    * 通过当前的目标数据找出添加的记录
    *
-   * @param targetList 目标数据
+   * @param valueInfo 目标数据
    * @return
    */
-  public void compareTarget(List<V> targetList) {
-
-    // 检查不在过滤器中的数据
-    for (V valueItem : targetList) {
-      String key = compareKeyInterface.getKey(valueItem);
-      String keyMany = compareKeyInterface.getKeyMany(valueItem);
-
-      // 布隆过滤器不存在的，一定是不存的,仅存在的，可能会存在误差问题
-      if (!srcBloomFilter.mightContain(key)) {
-        dataCompRsp.writeAddData(dataParse.toFileLine(valueItem));
-      }
-      // 如果主键能找到，多个对比数据不存在，则执行修改操作
-      else if (srcBloomFilter.mightContain(key) && !srcBloomFilter.mightContain(keyMany)) {
-        String dataValue = dataParse.toFileLine(valueItem);
-        dataCompRsp.writeUpdateAfterData(dataValue);
-        // 对修改操作做计数
-        updateNum++;
-        // 统计内容字大小
-        updateSumSize += dataValue.getBytes().length;
-      }
+  public void compareTarget(V valueInfo, DataCompareRsp rsp) {
+    if (valueInfo == null) {
+      return;
     }
+
+    String key = compareKeyInterface.getKey(valueInfo);
+    String keyMany = compareKeyInterface.getKeyMany(valueInfo);
+
+    // 布隆过滤器不存在的，一定是不存的,仅存在的，可能会存在误差问题
+    if (!srcBloomFilter.mightContain(key)) {
+      rsp.getAddList().add(dataParse.toFileLine(valueInfo));
+    }
+    // 如果主键能找到，多个对比数据不存在，则执行修改操作
+    else if (srcBloomFilter.mightContain(key) && !srcBloomFilter.mightContain(keyMany)) {
+      rsp.getUpdateAfterList().add(dataParse.toFileLine(valueInfo));
+    }
+  }
+
+  /**
+   * 对比目标数据集信息
+   *
+   * @param dataList 数据集
+   * @throws IOException
+   */
+  public DataCompareRsp compareSrcList(List<V> dataList) {
+
+    DataCompareRsp rsp = new DataCompareRsp();
+    // 初始化原始结果集合
+    rsp.initCompareTarget();
+
+    for (V dataLine : dataList) {
+      this.compareSrc(dataLine, rsp);
+    }
+
+    return rsp;
   }
 
   /**
    * 通过原始数据的找到不在目标数据中，也就是要删除的记录
    *
-   * @param srcList 原始数据类型
+   * @param dataInfo 原始数据类型
    * @return
    */
-  public void compareSrc(List<V> srcList) {
+  public void compareSrc(V dataInfo, DataCompareRsp rsp) {
 
-    // 检查不在过滤器中的数据
-    for (V dataItem : srcList) {
-      String key = compareKeyInterface.getKey(dataItem);
-      String keyMany = compareKeyInterface.getKeyMany(dataItem);
+    if (dataInfo == null) {
+      return;
+    }
 
-      // 布隆过滤器不存在的，一定是不存的,仅存在的，可能会存在误差问题
-      if (!targetBloomFilter.mightContain(key)) {
-        dataCompRsp.writeDeleteData(dataParse.toFileLine(dataItem));
-      }
-      // 如果主键能找到，多个对比数据不存在，则执行修改操作
-      else if (targetBloomFilter.mightContain(key) && !targetBloomFilter.mightContain(keyMany)) {
-        dataCompRsp.writeUpdateBeforeData(dataParse.toFileLine(dataItem));
-      }
+    String key = compareKeyInterface.getKey(dataInfo);
+    String keyMany = compareKeyInterface.getKeyMany(dataInfo);
+
+    // 布隆过滤器不存在的，一定是不存的,仅存在的，可能会存在误差问题
+    if (!targetBloomFilter.mightContain(key)) {
+      rsp.getDeleteList().add(dataParse.toFileLine(dataInfo));
+    }
+    // 如果主键能找到，多个对比数据不存在，则执行修改操作
+    else if (targetBloomFilter.mightContain(key) && !targetBloomFilter.mightContain(keyMany)) {
+      rsp.getUpdateBeforeList().add(dataParse.toFileLine(dataInfo));
     }
   }
 
-  /**
-   * 修改行数
-   *
-   * @return 行数
-   */
-  public long updSumNum() {
-    return updateNum;
+  /** 保存数据 */
+  public void save() {
+    FileUtils.checkAndMakeDir(this.savePath + Symbol.PATH + SRC_BLOOM_PATH);
+    // 原数据的布隆过滤器保存
+    srcBloomFilter.save(this.savePath + Symbol.PATH + SRC_BLOOM_PATH);
+    FileUtils.checkAndMakeDir(this.savePath + Symbol.PATH + TARGET_BLOOM_PATH);
+    // 目标数据的布隆过滤器保存
+    targetBloomFilter.save(this.savePath + Symbol.PATH + TARGET_BLOOM_PATH);
   }
 
-  /**
-   * 修改的总大小
-   *
-   * @return 总大小
-   */
-  public long updateSumSize() {
-    return updateSumSize;
+  public BoomFilterManager loadSrc() {
+    // 原数据的布隆过滤器保存
+    return new BoomFilterManager(this.savePath + Symbol.PATH + SRC_BLOOM_PATH);
+  }
+
+  public BoomFilterManager loadTarget() {
+    // 数据的布隆过滤器加载
+    return new BoomFilterManager(this.savePath + Symbol.PATH + TARGET_BLOOM_PATH);
   }
 }

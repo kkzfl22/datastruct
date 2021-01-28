@@ -1,12 +1,12 @@
 package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare;
 
 import com.config.Symbol;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator.ManyFileWrite;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator.ManyFileWriteBase;
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator.ManyFileWriteSize;
 import com.liujun.datastruct.utils.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,16 +25,10 @@ public class GenerateFile {
   private static final String COMPARE_TARGET = "target";
 
   /** 文件名 */
-  private static final String DATE_COMPARE = "datafile-";
-
-  /** 文件后缀名 */
-  private static final String DATA_COMPARE_SUFFIX = ".data";
+  private static final String DATE_COMPARE = "datafile";
 
   /** 生成8,589,934,592行记录 */
-  private static final long DATA_LINE_SUM = 2l << 27;
-
-  /** 单文件大小 */
-  private static final int FILE_LINE = 100000000;
+  private static final long DATA_LINE_SUM = 100000000;
 
   /** 生成8,589,934,592行记录 */
   private static final long DATA_LINE_LITTLE = 2l << 10;
@@ -49,29 +43,32 @@ public class GenerateFile {
   private static final String COMPARE_OUTPUT = "compareRsp";
 
   /** 路径信息 */
-  public static final String PATh = "D:\\run\\compare\\bigfile";
+  public static final String PATh_BIG = "D:\\run\\compare\\bigfile";
 
   /** 小文件 */
   public static final String PATh_LITTLE = "D:\\run\\compare\\littleFile";
 
   @Test
   public void generateFile() {
+    // 设置以128M为大小切分数据
+    ManyFileWriteSize.DEFAULT_FILE_SIZE = 1024 * 1024 * 128;
+
     // 1,生成大文件
-    // this.generateBigAllData();
+    this.generateBigAllData();
     // 生成小文件
-    this.generateLittleAllData();
+    // this.generateLittleAllData();
   }
 
   /** 生成小文件 */
   private void generateLittleAllData() {
-    generateFile(getSrcPath(PATh_LITTLE), DATE_COMPARE, DATA_LINE_LITTLE, FILE_LINE_LITTLE);
-    generateFile(getTargetPath(PATh_LITTLE), DATE_COMPARE, DATA_LINE_LITTLE, FILE_LINE_LITTLE);
+    generateFile(getSrcPath(PATh_LITTLE), DATE_COMPARE, FILE_LINE_LITTLE);
+    generateFile(getTargetPath(PATh_LITTLE), DATE_COMPARE, FILE_LINE_LITTLE);
   }
 
   /** 生成大文件 */
   private void generateBigAllData() {
-    generateFile(getSrcPath(PATh), DATE_COMPARE, DATA_LINE_SUM, FILE_LINE);
-    generateFile(getTargetPath(PATh), DATE_COMPARE, DATA_LINE_SUM, FILE_LINE);
+    generateFile(getSrcPath(PATh_BIG), DATE_COMPARE, DATA_LINE_SUM);
+    generateFile(getTargetPath(PATh_BIG), DATE_COMPARE, DATA_LINE_SUM);
   }
 
   public static String getSrcPath(String path) {
@@ -97,66 +94,79 @@ public class GenerateFile {
    *
    * @param path
    */
-  private void generateFile(String path, String fileName, long dataLineSum, int fileLineNum) {
+  private void generateFile(String path, String fileName, long dataSize) {
     FileUtils.checkAndMakeDir(path);
+
+    long start = System.currentTimeMillis();
+    long threshold = 2000000;
     // 生成一个文件在
+    try (ManyFileWriteBase writeData = ManyFileWrite.manyFileWriteBySize(path, fileName)) {
 
-    int fileNum = (int) (dataLineSum / fileLineNum);
-    for (int i = 0; i < fileNum; i++) {
-      String filePath = path + Symbol.PATH + fileName + i + DATA_COMPARE_SUFFIX;
-      // 90%的数据相同
-      int sameNum = (int) (fileLineNum - fileLineNum * 0.1);
-      GenerateFile.generateSameData(filePath, DATA_COLUMN, sameNum, i * fileLineNum);
-      // 10%的数据随机数据
-      GenerateFile.generateRandom(
-          filePath, DATA_COLUMN, (int) (fileLineNum * 0.1), i * fileLineNum + sameNum);
-    }
-  }
+      writeData.openFile();
 
-  /** 随机生成相关的数据内容 */
-  public static void generateRandom(String path, int columnSize, int lineSize, int startNum) {
-    // 使用文件流操作
-    try (FileWriter writer = new FileWriter(path, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(writer); ) {
-      int randNum = ThreadLocalRandom.current().nextInt(startNum, startNum + lineSize);
-      for (int i = startNum; i < randNum; i++) {
-        StringBuilder dataLine = new StringBuilder();
-        dataLine.append(i);
-        dataLine.append(Symbol.COMMA);
-        for (int j = 0; j < columnSize; j++) {
-          dataLine.append(RandomStringUtils.randomAlphabetic(2 + j));
-          dataLine.append(Symbol.COMMA);
+      for (long i = 0; i < dataSize; i++) {
+        if (i % 2 == 0) {
+          // 一行正常的数据
+          String data = this.getSameData(i, DATA_COLUMN);
+          writeData.writeLine(data);
+        } else {
+          String data = this.getRandomData(i, DATA_LINE_SUM, DATA_COLUMN);
+          writeData.writeLine(data);
         }
-        // 去除尾标识符
-        dataLine.deleteCharAt(dataLine.length() - 1);
-        dataLine.append(Symbol.LINE);
-        bufferedWriter.write(dataLine.toString());
+        if (i > threshold) {
+          long endTime = System.currentTimeMillis();
+          System.out.println("当前生成:" + i + "，用时" + (endTime - start) + "毫秒");
+          threshold = threshold + 2000000;
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  /** 按指定的内容生成 */
-  public static void generateSameData(String path, int columnSize, int lineSize, int startNum) {
-    // 使用文件流操作
-    try (FileWriter writer = new FileWriter(path, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(writer); ) {
-
-      for (int i = startNum; i < startNum + lineSize; i++) {
-        StringBuilder dataLine = new StringBuilder();
-        dataLine.append(i);
-        dataLine.append(Symbol.COMMA);
-        for (int j = 0; j < columnSize; j++) {
-          dataLine.append(j);
-          dataLine.append(Symbol.COMMA);
-        }
-        dataLine.deleteCharAt(dataLine.length() - 1);
-        dataLine.append(Symbol.LINE);
-        bufferedWriter.write(dataLine.toString());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+  /**
+   * 获取相关的数据
+   *
+   * @param key 键信息
+   * @param columnSize 列大小
+   * @return 行数据
+   */
+  private String getSameData(long key, int columnSize) {
+    StringBuilder dataLine = new StringBuilder();
+    dataLine.append(key);
+    dataLine.append(Symbol.COMMA);
+    dataLine.append(System.nanoTime());
+    dataLine.append(Symbol.COMMA);
+    for (int j = 0; j < columnSize; j++) {
+      dataLine.append(j);
+      dataLine.append(Symbol.COMMA);
     }
+    dataLine.deleteCharAt(dataLine.length() - 1);
+
+    return dataLine.toString();
+  }
+
+  /**
+   * 随机生成数据
+   *
+   * @param start 开始区间
+   * @param end 结束区间
+   * @param columnSize 列数
+   * @return 数据
+   */
+  private String getRandomData(long start, long end, int columnSize) {
+    long randNum = ThreadLocalRandom.current().nextLong(start, end);
+    StringBuilder dataLine = new StringBuilder();
+    dataLine.append(randNum);
+    dataLine.append(Symbol.COMMA);
+    dataLine.append(System.nanoTime());
+    dataLine.append(Symbol.COMMA);
+    for (int j = 0; j < columnSize; j++) {
+      dataLine.append(j);
+      dataLine.append(Symbol.COMMA);
+    }
+    dataLine.deleteCharAt(dataLine.length() - 1);
+
+    return dataLine.toString();
   }
 }

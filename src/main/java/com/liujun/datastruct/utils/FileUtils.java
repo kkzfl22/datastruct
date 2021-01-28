@@ -1,12 +1,17 @@
 package com.liujun.datastruct.utils;
 
 import com.config.Symbol;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 公共的文件夹创建
@@ -158,4 +163,54 @@ public class FileUtils {
       dataFile.delete();
     }
   }
+
+  /**
+   * 读取文件topNum行数据
+   *
+   * @param topNum 读取的行数
+   * @return 数据内容
+   */
+  public static List<String> readTop(String filePath, int topNum) {
+    List<String> data = new ArrayList<>(topNum);
+
+    String dataLine = null;
+    try (FileReader reader = new FileReader(filePath);
+        BufferedReader bufferedReader = new BufferedReader(reader); ) {
+      for (int i = 0; i < topNum; i++) {
+        if ((dataLine = bufferedReader.readLine()) != null) {
+          data.add(dataLine);
+        } else {
+          break;
+        }
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return data;
+  }
+
+  /**
+   * 读取文件topNum行数据
+   *
+   * @param filePath 路径信息
+   * @param data 数据信息
+   * @return 数据内容
+   */
+  public static void writeList(String filePath, List<String> data) {
+
+    try (FileWriter write = new FileWriter(filePath);
+        BufferedWriter bufferedReader = new BufferedWriter(write); ) {
+      for (String dataLine : data) {
+        bufferedReader.write(dataLine + Symbol.LINE);
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
 }

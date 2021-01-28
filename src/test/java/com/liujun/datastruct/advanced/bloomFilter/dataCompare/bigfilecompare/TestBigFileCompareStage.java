@@ -3,7 +3,6 @@ package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare;
 import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.compare.BigCompareKeyInf;
 import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.compare.DataParseInf;
 import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.entity.BigFileCompareInputEntity;
-import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator.ManyFileWriteSize;
 import org.junit.Test;
 
 /**
@@ -12,28 +11,30 @@ import org.junit.Test;
  * @author liujun
  * @version 0.0.1
  */
-public class TestBigFileCompare {
+public class TestBigFileCompareStage {
 
-  /** 上文件比较 */
+  /** 数据填充得到布隆过滤器的数据 */
   @Test
-  public void littleFileCompare() {
-    ManyFileWriteSize.DEFAULT_FILE_SIZE = 512;
+  public void bigFileCompareStageFull() {
     // 获取相关的目录
-    String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_LITTLE);
-    String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_LITTLE);
-    String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_LITTLE);
+    String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_BIG);
+    String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_BIG);
+    String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
 
     BigFileCompareInputEntity input =
         new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
 
+    BigFileCompareStage<FileDataEntity> bigCompare = new BigFileCompareStage<>();
 
-    BigFileCompare<FileDataEntity> bigCompare = new BigFileCompare<>();
-    boolean compareRsp = bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse());
+    String outPath = "D:\\run\\compare\\bigfile\\compareRsp\\stateSave";
+
+    boolean compareRsp =
+        bigCompare.fileCompareStateFullBloom(
+            input, new BigCompareKeyImpl(), getDataParse(), outPath);
     System.out.println(compareRsp);
   }
 
-
-  /** 上文件比较 */
+  /** 执行对比 */
   @Test
   public void bigFileCompare() {
     // 获取相关的目录
@@ -42,13 +43,14 @@ public class TestBigFileCompare {
     String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
 
     BigFileCompareInputEntity input =
-            new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
+        new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
 
-    BigFileCompare<FileDataEntity> bigCompare = new BigFileCompare<>();
-    boolean compareRsp = bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse());
-    System.out.println(compareRsp);
+    BigFileCompareStage<FileDataEntity> bigCompare = new BigFileCompareStage<>();
+
+    String outPath = "D:\\run\\compare\\bigfile\\compareRsp\\stateSave";
+
+    bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse(), outPath);
   }
-
 
   /** 用于对比的主键信息 */
   private class BigCompareKeyImpl implements BigCompareKeyInf<FileDataEntity> {

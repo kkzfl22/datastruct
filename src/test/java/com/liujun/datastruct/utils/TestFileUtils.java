@@ -1,11 +1,14 @@
 package com.liujun.datastruct.utils;
 
 import com.config.Symbol;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 测试文件
@@ -42,5 +45,37 @@ public class TestFileUtils {
     String outFileName = FileUtils.getFileNameNotSuffix(fileName);
     FileUtils.deleteFile(fileName);
     Assert.assertEquals("testName", outFileName);
+  }
+
+  @Test
+  public void testReadTop() {
+    String path = this.getClass().getClassLoader().getResource(".").getPath();
+    String fileName = path + Symbol.PATH + "testName.txt";
+
+    List<String> dataList = new ArrayList<>(20);
+    for (int i = 0; i < 20; i++) {
+      dataList.add(RandomStringUtils.randomAlphabetic(100));
+    }
+    FileUtils.writeList(fileName, dataList);
+
+    List<String> dataListTop = FileUtils.readTop(fileName, 10);
+
+    for (String dataLine : dataListTop) {
+      Assert.assertNotNull(dataLine);
+    }
+
+    FileUtils.deleteFile(fileName);
+  }
+
+  @Test
+  public void getIndex() {
+
+    String name = "data:/data/data-12.data";
+    int startPosition = name.lastIndexOf(Symbol.MINUS);
+    int endPosition = name.lastIndexOf(".data");
+    String indexStr = name.substring(startPosition + Symbol.MINUS.length(), endPosition);
+
+    int index = Integer.parseInt(indexStr);
+    Assert.assertEquals(index, 12);
   }
 }

@@ -1,5 +1,6 @@
-package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.updfile;
+package com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator;
 
+import com.liujun.datastruct.advanced.bloomFilter.dataCompare.bigfilecompare.fileoperator.ManyFileReader;
 import org.junit.Assert;
 import org.junit.Test;
 
