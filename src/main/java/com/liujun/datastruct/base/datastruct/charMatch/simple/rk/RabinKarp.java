@@ -85,7 +85,7 @@ public class RabinKarp {
    * @return 查找到索引位置
    */
   private long countHash2(char[] countArrs, int start, int end) {
-    long rsp = 0l;
+    long rsp = 0L;
 
     // 1,进行模式串的计算
     for (int i = end - 1; i >= start; i--) {
@@ -103,7 +103,7 @@ public class RabinKarp {
    * @return
    */
   private long countHash(char[] countArrs) {
-    long rsp = 0l;
+    long rsp = 0L;
 
     // 1,进行模式串的计算
     for (int i = countArrs.length - 1; i >= 0; i--) {

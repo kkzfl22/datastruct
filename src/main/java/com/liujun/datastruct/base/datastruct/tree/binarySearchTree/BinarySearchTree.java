@@ -120,7 +120,9 @@ public class BinarySearchTree {
    */
   public void printNode(treeNode node) {
 
-    if (null == node) return;
+    if (null == node) {
+      return;
+    }
 
     System.out.print(node.value + "\t");
 
@@ -302,11 +304,10 @@ public class BinarySearchTree {
     }
   }
 
-
   /**
    * 计算层级的重点于在写出递推公式
    *
-   * count(level) = max(count(level.left),count(level.right))
+   * <p>count(level) = max(count(level.left),count(level.right))
    *
    * @param root
    * @param index

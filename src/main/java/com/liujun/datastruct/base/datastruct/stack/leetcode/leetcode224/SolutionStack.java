@@ -47,7 +47,7 @@ public class SolutionStack {
       Oper countFun = null;
 
       for (Oper operitem : values()) {
-        if (operitem.oper == oper) {
+        if (operitem.oper.equals(oper)) {
           countFun = operitem;
           break;
         }
@@ -100,7 +100,8 @@ public class SolutionStack {
       // 进行减法操作符的压栈
       else if (currItem == Oper.MINUS.oper) {
         // 如果出现在首个位置，或者括号位置，则为负数
-        if (valueStack.isEmpty() || (!operStack.isEmpty() && operStack.peek() == Oper.LEFT.oper)) {
+        if (valueStack.isEmpty()
+            || (!operStack.isEmpty() && operStack.peek().equals(Oper.LEFT.oper))) {
           // 提取连续的数字变为int类型
           int getNums = 0;
           while (curIndex < s.length() && Character.isDigit(dataChars[curIndex])) {
@@ -142,7 +143,7 @@ public class SolutionStack {
         Stack<Character> tmpOperStack = new Stack<>();
         while (!operStack.isEmpty()) {
           // 检查到左括号时，退出
-          if (operStack.peek() == Oper.LEFT.oper) {
+          if (operStack.peek().equals(Oper.LEFT.oper)) {
             operStack.pop();
             break;
           }

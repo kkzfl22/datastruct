@@ -12,6 +12,7 @@ public class IOUtils {
 
   /**
    * 关闭操作
+   *
    * @param stream
    */
   public static void close(Closeable stream) {
@@ -19,6 +20,21 @@ public class IOUtils {
       try {
         stream.close();
       } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * 关闭操作
+   *
+   * @param stream
+   */
+  public static void close(AutoCloseable stream) {
+    if (null != stream) {
+      try {
+        stream.close();
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }

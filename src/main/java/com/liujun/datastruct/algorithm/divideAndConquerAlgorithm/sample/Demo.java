@@ -16,7 +16,9 @@ public class Demo {
   }
 
   private void mergeSortCounting(int[] a, int p, int r) {
-    if (p >= r) return;
+    if (p >= r) {
+      return;
+    }
     int q = (p + r) / 2;
     mergeSortCounting(a, p, q);
     mergeSortCounting(a, q + 1, r);

@@ -35,8 +35,9 @@ public class MyBlockerCycleArrayQuque implements MyQueueInf {
   }
 
   public boolean enqueue(int value) {
+    lock.lock();
     try {
-      lock.lock();
+
       // check queue full
       while ((tail + 1) % capacity == head) {
         enqueueLock.await();
@@ -60,9 +61,10 @@ public class MyBlockerCycleArrayQuque implements MyQueueInf {
   }
 
   public int dequeue() {
+    lock.lock();
     int getValue = 0;
     try {
-      lock.lock();
+
       while ((tail == head)) {
         dequeueLock.await();
         enqueueLock.signal();

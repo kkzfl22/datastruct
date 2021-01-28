@@ -20,8 +20,14 @@ public class BoyerMoore {
         --j;
         ++k;
       }
-      if (k != 0) suffix[k] = j + 1; // j+1 表示公共后缀子串在 b[0, i] 中的起始下标
-      if (j == -1) prefix[k] = true; // 如果公共后缀子串也是模式串的前缀子串
+      if (k != 0) {
+        // j+1 表示公共后缀子串在 b[0, i] 中的起始下标
+        suffix[k] = j + 1;
+      }
+      if (j == -1) {
+        // 如果公共后缀子串也是模式串的前缀子串
+        prefix[k] = true;
+      }
     }
   }
 }

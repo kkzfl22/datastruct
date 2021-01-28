@@ -44,7 +44,7 @@ public class ConsistentHashingWithoutVirtualNode {
 
   public static void main(String[] args) {
     String[] nodes = {"127.0.0.1:1111", "221.226.0.1:2222", "10.211.0.1:3333"};
-    for (int i = 0; i < nodes.length; i++)
+    for (int i = 0; i < nodes.length; i++) {
       System.out.println(
           "["
               + nodes[i]
@@ -53,5 +53,6 @@ public class ConsistentHashingWithoutVirtualNode {
               + ", 被路由到结点["
               + getNode(nodes[i])
               + "]");
+    }
   }
 }

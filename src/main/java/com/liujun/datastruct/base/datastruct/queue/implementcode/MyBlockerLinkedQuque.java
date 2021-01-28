@@ -42,10 +42,8 @@ public class MyBlockerLinkedQuque implements MyQueueInf {
   }
 
   public boolean enqueue(int value) {
-
+    lock.lock();
     try {
-      lock.lock();
-
       while (size >= capacity) {
         deququeLock.signal();
         enqueueLock.await();
@@ -72,10 +70,8 @@ public class MyBlockerLinkedQuque implements MyQueueInf {
   public int dequeue() {
 
     int getValue = -1;
-
+    lock.lock();
     try {
-      lock.lock();
-
       while (size == 0) {
         enqueueLock.signal();
         deququeLock.await();
