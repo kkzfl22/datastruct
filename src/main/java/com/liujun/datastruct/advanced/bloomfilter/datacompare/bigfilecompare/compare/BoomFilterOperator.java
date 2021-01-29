@@ -24,11 +24,11 @@ public class BoomFilterOperator {
   /** 1,3421,7728 占用1.3亿个位置 */
   public static final int DEFAULT_SIZE = 2 << 27;
 
-  /** 占用8分之1的空间，存数据 */
-  public static final int DATA_NUM = 2 << 24;
+  /** 占用2分之1的空间，存数据 */
+  public static final int DATA_NUM = 2 << 26;
 
   /** 出现冲突的概率 */
-  private static final double DEFAULT_FPP = 0.125;
+  private static final double DEFAULT_FPP = ((double) DATA_NUM) / ((double) DEFAULT_SIZE);
 
   /** 原始数据填充布隆过滤器 */
   private final BloomFilter<String> bloomFilter;

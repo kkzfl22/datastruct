@@ -17,7 +17,7 @@ public class TestBigFileCompare {
   /** 上文件比较 */
   @Test
   public void littleFileCompare() {
-    ManyFileWriteSize.DEFAULT_FILE_SIZE = 512;
+    ManyFileWriteSize.DEFAULT_FILE_SIZE = 1024;
     // 获取相关的目录
     String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_LITTLE);
     String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_LITTLE);
@@ -26,12 +26,12 @@ public class TestBigFileCompare {
     BigFileCompareInputEntity input =
         new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
 
-
     BigFileCompare<FileDataEntity> bigCompare = new BigFileCompare<>();
-    boolean compareRsp = bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse());
+    boolean compareRsp =
+        bigCompare.fileCompare(
+            input, new BigCompareKeyImpl(), getDataParse(), FileDataEntity.class);
     System.out.println(compareRsp);
   }
-
 
   /** 上文件比较 */
   @Test
@@ -42,13 +42,14 @@ public class TestBigFileCompare {
     String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
 
     BigFileCompareInputEntity input =
-            new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
+        new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
 
     BigFileCompare<FileDataEntity> bigCompare = new BigFileCompare<>();
-    boolean compareRsp = bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse());
+    boolean compareRsp =
+        bigCompare.fileCompare(
+            input, new BigCompareKeyImpl(), getDataParse(), FileDataEntity.class);
     System.out.println(compareRsp);
   }
-
 
   /** 用于对比的主键信息 */
   private class BigCompareKeyImpl implements BigCompareKeyInf<FileDataEntity> {

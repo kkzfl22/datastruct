@@ -33,7 +33,7 @@ public class TestUniqueRowProcess {
       List<String> dataList = FileUtils.readTop(output + "/merge-repetition-0.txt", 10);
 
       Assert.assertEquals(dataList.get(0), "0,0,1,2,3,8");
-      Assert.assertEquals(dataList.get(1), "1,0,1,2,3,8");
+      Assert.assertEquals(dataList.get(1), "1,0,1,2,3,4");
       Assert.assertEquals(dataList.get(2), "2,0,1,2,3,8");
       Assert.assertEquals(dataList.get(3), "3,0,1,2,3,8");
       Assert.assertEquals(dataList.get(4), "4,0,1,2,3,8");

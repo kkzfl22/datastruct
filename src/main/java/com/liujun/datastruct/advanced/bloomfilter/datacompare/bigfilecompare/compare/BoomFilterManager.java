@@ -40,7 +40,8 @@ public class BoomFilterManager {
    * @param mightNum 预估的布隆过滤器的大小，不用特别精确
    */
   public BoomFilterManager(long mightNum) {
-    this.mightNum = mightNum * 4;
+    // 在估算的容量中加个倍，以防预估不足,同时预留50%的布隆过滤器空间
+    this.mightNum = mightNum * 2;
     // 用于计算需要使用的存储的容量
     int dataNum = (int) this.mightNum / BoomFilterOperator.DATA_NUM;
     // 由于此处限制使用2的幂，可以更好的做到散列的平均

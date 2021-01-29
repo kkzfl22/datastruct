@@ -115,6 +115,6 @@ public class BigFileCompareStage<V> extends BigFileCompare<V> {
     }
 
     // 修改文件的对比并有序输出
-    this.updateDataOut(output, dataParse);
+    this.updateDataOutput(output, dataParse);
   }
 }

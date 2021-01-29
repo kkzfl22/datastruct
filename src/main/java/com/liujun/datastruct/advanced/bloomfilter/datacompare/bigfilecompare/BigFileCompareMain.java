@@ -23,7 +23,7 @@ public class BigFileCompareMain {
         new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
 
     BigFileCompare<FileDataEntity> bigCompare = new BigFileCompare<>();
-    boolean compareRsp = bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse());
+    boolean compareRsp = bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse(),FileDataEntity.class);
     System.out.println(compareRsp);
   }
 

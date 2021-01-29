@@ -39,10 +39,13 @@ public class BigFileSort<V> {
   /** 用于统计输出操作 */
   private final DataStatistics dataStatistics;
 
+  /** 当我数据排序时，每10个文件，执行一次输出 */
+  private static final int INCREMENT = 20;
+
   public BigFileSort(String readPath, DataParseInf<V> dataParse) {
     this.readPath = readPath;
     this.dataParse = dataParse;
-    this.dataStatistics = new DataStatistics(10);
+    this.dataStatistics = new DataStatistics(INCREMENT);
   }
 
   /**

@@ -1,10 +1,12 @@
 package com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.uniquerows;
 
+import com.config.Symbol;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.common.BigFileSort;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.DataParseInf;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.fileoperator.AbstractManyFileWrite;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.fileoperator.ManyFileReader;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.fileoperator.ManyFileWrite;
+import com.liujun.datastruct.utils.FileUtils;
 
 import java.io.IOException;
 
@@ -18,35 +20,51 @@ import java.io.IOException;
  */
 public class UniqueRowProcess {
 
-  private static final String UNIQUE_DATA_OUT_FILENAME = "unique-data";
+  /** 去重的临时数据 */
+  private static final String UNIQUE_DATA_OUT_PATH = "unique-data";
+
+  /** 合并数据 */
+  private static final String MERGE_DATA_OUTPUT_PATH = "merge-data";
 
   /**
    * 执行大型文件中的去重操作
    *
    * @param path
    */
-  public <V> void uniqueRows(
-      String path, String outPath, DataParseInf<V> dataParse, Class<V> dataClass) {
+  public <V> String uniqueRows(
+      String path, String outPath, DataParseInf<V> dataParse, Class dataClass) {
+
+    String outDataPath = outPath + Symbol.PATH + UNIQUE_DATA_OUT_PATH;
+    FileUtils.checkAndMakeDir(outDataPath);
+
     // 1,按顺序执行文件分隔操作
-    this.spitFile(path, outPath);
+    this.spitFile(path, outDataPath);
     // 多路文件排序操作,由于需要保证算法的稳定性，选择了JDK提供的插入排序算法
-    BigFileSort<V> dataRsp = new BigFileSort<>(outPath, dataParse);
+    BigFileSort<V> dataRsp = new BigFileSort<>(outDataPath, dataParse);
     String sortPath = dataRsp.bigFileSort();
     // 进行数据有序行的合并操作,在相同id中，保留最后最一条数据
-    MergeRepetitionData merge = new MergeRepetitionData(dataClass, sortPath, outPath, dataParse);
+    String outMergePath = outPath + Symbol.PATH + MERGE_DATA_OUTPUT_PATH;
+    FileUtils.checkAndMakeDir(outMergePath);
+    MergeRepetitionData merge =
+        new MergeRepetitionData(dataClass, sortPath, outMergePath, dataParse);
     merge.merge();
+
+    // 完成后删除去重的临时文件
+    FileUtils.deleteDir(outDataPath);
+
+    return outMergePath;
   }
 
   /**
    * 执行文件的切分操作
    *
-   * @param path
-   * @param spitOutPath
+   * @param path 原始路径
+   * @param spitOutPath 分隔后的路径
    */
   private void spitFile(String path, String spitOutPath) {
     try (ManyFileReader reader = new ManyFileReader(path);
         AbstractManyFileWrite write =
-            ManyFileWrite.manyFileWriteBySize(spitOutPath, UNIQUE_DATA_OUT_FILENAME)) {
+            ManyFileWrite.manyFileWriteBySize(spitOutPath, UNIQUE_DATA_OUT_PATH)) {
 
       reader.openFile();
       write.openFile();
