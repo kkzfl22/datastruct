@@ -3,6 +3,7 @@ package com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.fl
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.DataCompare;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.DataCompareFileOutput;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.DataParseInf;
+import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.FileTaskCallableCompare;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.FileTaskCompare;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.entity.BigFileCompareInputEntity;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.entity.DataCompareRsp;
@@ -75,11 +76,16 @@ public class DataCompareOperator implements FlowInf {
       DataParseInf dataParse,
       DataCompareFileOutput compareOutput) {
     // 执行数据的并行处理
-    FileTaskCompare.readerDataProc(
+    FileTaskCallableCompare.readerDataProc(
         readSrc,
         dataParse,
+        // 数据转换函数
         (data) -> {
           DataCompareRsp rsp = compare.compareSrcList(data);
+          return rsp;
+        },
+        // 数据写入函数
+        (rsp) -> {
           try {
             // 数据输出操作
             compareOutput.dataLineWrite(rsp);
@@ -101,11 +107,16 @@ public class DataCompareOperator implements FlowInf {
       DataCompareFileOutput compareOutput) {
 
     // 执行数据的并行处理
-    FileTaskCompare.readerDataProc(
+    FileTaskCallableCompare.readerDataProc(
         readTarget,
         dataParse,
+        // 转换函数
         (data) -> {
           DataCompareRsp rsp = compare.compareTargetList(data);
+          return rsp;
+        },
+        // 数据写入函数
+        (rsp) -> {
           try {
             // 数据输出操作
             compareOutput.dataLineWrite(rsp);

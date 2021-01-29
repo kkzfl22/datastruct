@@ -13,44 +13,44 @@ import org.junit.Test;
  */
 public class TestBigFileCompareStage {
 
-  /** 数据填充得到布隆过滤器的数据 */
-  @Test
-  public void bigFileCompareStageFull() {
-    // 获取相关的目录
-    String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_BIG);
-    String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_BIG);
-    String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
-
-    BigFileCompareInputEntity input =
-        new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
-
-    BigFileCompareStage<FileDataEntity> bigCompare = new BigFileCompareStage<>();
-
-    String outPath = "D:\\run\\compare\\bigfile\\compareRsp\\stateSave";
-
-    boolean compareRsp =
-        bigCompare.fileCompareStateFullBloom(
-            input, new BigCompareKeyImpl(), getDataParse(), outPath);
-    System.out.println(compareRsp);
-  }
-
-  /** 执行对比 */
-  @Test
-  public void bigFileCompare() {
-    // 获取相关的目录
-    String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_BIG);
-    String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_BIG);
-    String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
-
-    BigFileCompareInputEntity input =
-        new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
-
-    BigFileCompareStage<FileDataEntity> bigCompare = new BigFileCompareStage<>();
-
-    String outPath = "D:\\run\\compare\\bigfile\\compareRsp\\stateSave";
-
-    bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse(), outPath);
-  }
+  /// ** 数据填充得到布隆过滤器的数据 */
+  // @Test
+  // public void bigFileCompareStageFull() {
+  //  // 获取相关的目录
+  //  String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_BIG);
+  //  String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_BIG);
+  //  String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
+  //
+  //  BigFileCompareInputEntity input =
+  //      new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
+  //
+  //  BigFileCompareStage<FileDataEntity> bigCompare = new BigFileCompareStage<>();
+  //
+  //  String outPath = "D:\\run\\compare\\bigfile\\compareRsp\\stateSave";
+  //
+  //  boolean compareRsp =
+  //      bigCompare.fileCompareStateFullBloom(
+  //          input, new BigCompareKeyImpl(), getDataParse(), outPath);
+  //  System.out.println(compareRsp);
+  // }
+  //
+  /// ** 执行对比 */
+  // @Test
+  // public void bigFileCompare() {
+  //  // 获取相关的目录
+  //  String srcPath = GenerateFile.getSrcPath(GenerateFile.PATh_BIG);
+  //  String targetPath = GenerateFile.getTargetPath(GenerateFile.PATh_BIG);
+  //  String compareOutput = GenerateFile.getCompareOutput(GenerateFile.PATh_BIG);
+  //
+  //  BigFileCompareInputEntity input =
+  //      new BigFileCompareInputEntity(srcPath, targetPath, compareOutput);
+  //
+  //  BigFileCompareStage<FileDataEntity> bigCompare = new BigFileCompareStage<>();
+  //
+  //  String outPath = "D:\\run\\compare\\bigfile\\compareRsp\\stateSave";
+  //
+  //  bigCompare.fileCompare(input, new BigCompareKeyImpl(), getDataParse(), outPath);
+  // }
 
   /** 用于对比的主键信息 */
   private class BigCompareKeyImpl implements BigCompareKeyInf<FileDataEntity> {

@@ -67,7 +67,7 @@ public abstract class AbstractManyFileWrite implements AutoCloseable {
    *
    * @param data 数据内容
    */
-  public synchronized void writeLine(String data) throws IOException {
+  public void writeLine(String data) throws IOException {
     String outData = data + Symbol.LINE;
     // 检查是否需要进行切换新文件
     if (this.checkSwitchFile(outData)) {

@@ -1,6 +1,7 @@
 package com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.threadpool;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -80,13 +81,22 @@ public class ScheduleTaskThreadPool {
    */
   private ThreadPoolExecutor pool =
       new ThreadPoolExecutor(
-              MIN_THREAD_NUM,
-              MAX_THREAD_NUM,
-              KEEPALIVE,
+          MIN_THREAD_NUM,
+          MAX_THREAD_NUM,
+          KEEPALIVE,
           TimeUnit.SECONDS,
           queue,
           factory,
           new ThreadPoolExecutor.CallerRunsPolicy());
+
+  /**
+   * 提交带返回值的线程给线程池来运行
+   *
+   * @param task
+   */
+  public Future<?> submit(Callable task) {
+    return pool.submit(task);
+  }
 
   /**
    * 提交任务给线程池运行
