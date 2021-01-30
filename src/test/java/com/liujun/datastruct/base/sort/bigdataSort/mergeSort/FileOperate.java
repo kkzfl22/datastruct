@@ -1,5 +1,6 @@
 package com.liujun.datastruct.base.sort.bigdataSort.mergeSort;
 
+import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.constant.CompareConfig;
 import com.liujun.datastruct.utils.IOUtils;
 
 import java.io.*;
@@ -16,12 +17,14 @@ import java.util.function.Supplier;
 public class FileOperate {
 
   private static final String PREFIX = "outseq-";
-  private static final String SUFIXNAME = ".txt";
+
+  /** 文件后缀名 */
+  private static final String SUFFIX_NAME = CompareConfig.TEXT_SUFFIX_NAME;
 
   /** 默认写入总行数 */
-  private static final int DEFAUL_SUM_NUM = 1000;
+  private static final int DEFAULT_SUM_NUM = 1000;
   /** 限制单文件夹为5个文件 */
-  private static final int DEF_MAXFILE_NUM = 8;
+  private static final int DEF_MAX_FILE_NUM = 8;
   /** 限制单文件的最大大小 */
   private static final long DEF_MAX_FILE_SIZE = 1024;
 
@@ -37,7 +40,7 @@ public class FileOperate {
   public static List<String> Generate(
       String basePath, int sumNum, long fileMaxFileSize, Supplier<String> methos) {
     MultFileWrite write =
-        new MultFileWrite(basePath, PREFIX, SUFIXNAME, DEF_MAXFILE_NUM, fileMaxFileSize);
+        new MultFileWrite(basePath, PREFIX, SUFFIX_NAME, DEF_MAX_FILE_NUM, fileMaxFileSize);
 
     try {
       write.open();
@@ -60,7 +63,7 @@ public class FileOperate {
    * @return
    */
   public static List<String> DefaultGenerate16(String basePath) {
-    return Generate(basePath, DEFAUL_SUM_NUM, DEF_MAX_FILE_SIZE, GenerateData::dataStr);
+    return Generate(basePath, DEFAULT_SUM_NUM, DEF_MAX_FILE_SIZE, GenerateData::dataStr);
   }
 
   /**

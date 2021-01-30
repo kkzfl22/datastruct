@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -165,6 +166,25 @@ public class FileUtils {
   }
 
   /**
+   * 删除父文件夹，文件存在时，也删除文件,不执行递归删除
+   *
+   * @param filePath 文件路径
+   */
+  public static void deleteParentDir(String filePath) {
+    File dataFile = new File(filePath);
+
+    if (dataFile.isDirectory()) {
+      for (File dataItem : dataFile.listFiles()) {
+        dataItem.delete();
+      }
+      dataFile.delete();
+    }
+
+    // 删除父目录
+    dataFile.getParentFile().delete();
+  }
+
+  /**
    * 读取文件topNum行数据
    *
    * @param topNum 读取的行数
@@ -175,6 +195,40 @@ public class FileUtils {
 
     String dataLine = null;
     try (FileReader reader = new FileReader(filePath);
+        BufferedReader bufferedReader = new BufferedReader(reader); ) {
+      for (int i = 0; i < topNum; i++) {
+        if ((dataLine = bufferedReader.readLine()) != null) {
+          data.add(dataLine);
+        } else {
+          break;
+        }
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return data;
+  }
+
+  /**
+   * 读取文件topNum行数据
+   *
+   * @param topNum 读取的行数
+   * @return 数据内容
+   */
+  public static List<String> readDirTop(String dirPath, int topNum) {
+
+    File[] dirFileList = FileUtils.getFileList(dirPath);
+
+    if (dirFileList.length == 0) {
+      return Collections.emptyList();
+    }
+
+    List<String> data = new ArrayList<>(topNum);
+
+    String dataLine = null;
+    try (FileReader reader = new FileReader(dirFileList[0]);
         BufferedReader bufferedReader = new BufferedReader(reader); ) {
       for (int i = 0; i < topNum; i++) {
         if ((dataLine = bufferedReader.readLine()) != null) {
@@ -211,6 +265,4 @@ public class FileUtils {
       e.printStackTrace();
     }
   }
-
-
 }

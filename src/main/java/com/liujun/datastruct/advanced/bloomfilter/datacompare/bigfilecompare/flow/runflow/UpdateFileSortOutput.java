@@ -33,7 +33,7 @@ public class UpdateFileSortOutput implements FlowInf {
     // 相关的数据合并操作
     merge.merge();
 
-    // 删除用于对比的时间文件
+    // 删除用于修改的临时文件
     FileUtils.deleteDir(output.getUpdBeforeDirPath());
     FileUtils.deleteDir(output.getUpdAfterDirPath());
 

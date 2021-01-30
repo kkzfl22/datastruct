@@ -17,19 +17,19 @@ import java.io.IOException;
 public class DataCompareFileOutput implements AutoCloseable {
 
   /** 对比结果中添加的数据 */
-  private static final String ADD_FILE_NAME = "add-data";
+  public static final String ADD_FILE_NAME = "add-data";
 
   /** 对比结果中修改的数据 */
-  private static final String UPDATE_FILE_BEFORE_NAME = "upd-data-before";
+  public static final String UPDATE_FILE_BEFORE_NAME = "upd-data-before";
 
   /** 对比结果中修改的数据的内容 */
-  private static final String UPDATE_FILE_AFTER_NAME = "upd-data-after";
+  public static final String UPDATE_FILE_AFTER_NAME = "upd-data-after";
 
   /** 修改的最终目录 */
-  private static final String UPDATE_RSP_NAME = "update-data";
+  public static final String UPDATE_RSP_NAME = "update-data";
 
   /** 对比结果删除的数据 */
-  private static final String DEL_FILE_NAME = "del-data";
+  public static final String DEL_FILE_NAME = "del-data";
 
   /** 增加数据内容 */
   private AbstractManyFileWrite addFile;

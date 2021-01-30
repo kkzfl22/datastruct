@@ -1,5 +1,7 @@
 package com.liujun.datastruct.base.sort.bigdataSort.mergeSort;
 
+import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.constant.CompareConfig;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +22,7 @@ public class FileSpit {
   private static final int MAX_DIR_FILE = 10;
 
   /** 文件后缀名 */
-  private static final String NAME_SUFFIX = ".txt";
+  private static final String NAME_SUFFIX = CompareConfig.TEXT_SUFFIX_NAME;
 
   public static final FileSpit INSTANCE = new FileSpit();
 

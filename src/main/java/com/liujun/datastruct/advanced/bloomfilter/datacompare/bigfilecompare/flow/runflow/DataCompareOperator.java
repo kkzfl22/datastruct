@@ -11,6 +11,7 @@ import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.fil
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.flow.CompareKeyEnum;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.flow.ContextContainer;
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.flow.FlowInf;
+import com.liujun.datastruct.utils.FileUtils;
 import com.liujun.datastruct.utils.IOUtils;
 
 import java.io.IOException;
@@ -61,6 +62,17 @@ public class DataCompareOperator implements FlowInf {
     }
 
     context.put(CompareKeyEnum.PROC_COMPARE_MANY_OUTPUT.getKey(), output);
+
+    // 对比完成，可以清理去重后的数据
+    // 原始数据去除重复的行
+    String srcPath = (String) context.get(CompareKeyEnum.PROC_REMOVE_DUPLICATE_OUTPUT_SRC.getKey());
+    FileUtils.deleteParentDir(srcPath);
+
+    // 目标数据去除重复的行
+    String targetPath =
+        (String) context.get(CompareKeyEnum.PROC_REMOVE_DUPLICATE_OUTPUT_TARGET.getKey());
+    FileUtils.deleteParentDir(targetPath);
+
     return true;
   }
 

@@ -40,13 +40,15 @@ public class DataCleanRepetition implements FlowInf {
     Class dataEntity = (Class) context.get(CompareKeyEnum.INPUT_COMPARE_ENTITY_CLASS.getKey());
 
     // 1,针对原始数据去重操作
+    String outSrcPath = inputEntity.getCompareOutPath() + Symbol.PATH + SRC_PATH_FLAG;
     String srcPath =
-        cleanRepetitionSrc(
-            inputEntity.getSrcPath(), inputEntity.getCompareOutPath(), dataParse, dataEntity);
+        rowProcess.uniqueRows(inputEntity.getSrcPath(), outSrcPath, dataParse, dataEntity);
+
     // 对目标数据执行去重操作
+    String outTargetPath = inputEntity.getCompareOutPath() + Symbol.PATH + TARGET_PATH_FLAG;
+    
     String targetPath =
-        cleanRepetitionTarget(
-            inputEntity.getTargetPath(), inputEntity.getCompareOutPath(), dataParse, dataEntity);
+        rowProcess.uniqueRows(inputEntity.getTargetPath(), outTargetPath, dataParse, dataEntity);
 
     // 原始数据去除重复的行
     context.put(CompareKeyEnum.PROC_REMOVE_DUPLICATE_OUTPUT_SRC.getKey(), srcPath);
@@ -54,37 +56,5 @@ public class DataCleanRepetition implements FlowInf {
     context.put(CompareKeyEnum.PROC_REMOVE_DUPLICATE_OUTPUT_TARGET.getKey(), targetPath);
 
     return true;
-  }
-
-  /**
-   * 清除源文件中重复数据操作
-   *
-   * @param path 原始路径
-   * @param outPathBase 输出路径
-   * @param dataParse 转换接口
-   * @param dataEntity 实体类对象
-   * @return
-   */
-  private String cleanRepetitionSrc(
-      String path, String outPathBase, DataParseInf dataParse, Class dataEntity) {
-    String outSrcPath = outPathBase + Symbol.PATH + SRC_PATH_FLAG;
-    String outPath = rowProcess.uniqueRows(path, outSrcPath, dataParse, dataEntity);
-    return outPath;
-  }
-
-  /**
-   * 清除目标文件中重复数据操作
-   *
-   * @param path 原始路径
-   * @param outPathBase 输出路径
-   * @param dataParse 转换接口
-   * @param dataEntity 实体类对象
-   * @return
-   */
-  private String cleanRepetitionTarget(
-      String path, String outPathBase, DataParseInf dataParse, Class dataEntity) {
-    String outSrcPath = outPathBase + Symbol.PATH + TARGET_PATH_FLAG;
-    String outPath = rowProcess.uniqueRows(path, outSrcPath, dataParse, dataEntity);
-    return outPath;
   }
 }

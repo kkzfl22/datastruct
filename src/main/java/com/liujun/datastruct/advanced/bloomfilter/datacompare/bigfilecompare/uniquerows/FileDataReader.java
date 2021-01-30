@@ -2,6 +2,7 @@ package com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.un
 
 import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.compare.DataParseInf;
 import com.liujun.datastruct.utils.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,7 +52,7 @@ public class FileDataReader<V> implements AutoCloseable {
    */
   public V read() throws IOException {
     String dataValue = bufferedReader.readLine();
-    if (null == dataValue) {
+    if (StringUtils.isEmpty(dataValue)) {
       return null;
     }
     return this.dataParse.lineToData(dataValue);

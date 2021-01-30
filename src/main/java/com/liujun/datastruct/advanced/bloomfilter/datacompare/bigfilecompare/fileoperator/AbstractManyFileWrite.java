@@ -1,6 +1,7 @@
 package com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.fileoperator;
 
 import com.config.Symbol;
+import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.constant.CompareConfig;
 import com.liujun.datastruct.utils.FileUtils;
 import com.liujun.datastruct.utils.IOUtils;
 
@@ -17,11 +18,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class AbstractManyFileWrite implements AutoCloseable {
 
-  /** 文件写入标识 */
-  private static final String WRITE_ING_FLAG = ".ing";
+  /** 正在文件写入标识 */
+  private static final String WRITE_ING_FLAG = CompareConfig.TEXT_SUFFIX_NAME_ING;
 
   /** 写入的文件后缀名 */
-  private static final String WRITE_FILE_SUFFIX_NAME = ".txt";
+  private static final String WRITE_FILE_SUFFIX_NAME = CompareConfig.TEXT_SUFFIX_NAME;
 
   /** 基础的文件路径 */
   private final String path;
