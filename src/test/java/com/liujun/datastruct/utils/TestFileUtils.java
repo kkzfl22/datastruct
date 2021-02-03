@@ -78,4 +78,21 @@ public class TestFileUtils {
     int index = Integer.parseInt(indexStr);
     Assert.assertEquals(index, 12);
   }
+
+  @Test
+  public void testCleanCycle() {
+    String path = this.getClass().getClassLoader().getResource(".").getPath();
+
+    StringBuilder pathOut = new StringBuilder();
+    path = path + Symbol.PATH + "0";
+    pathOut.append(path);
+    for (int i = 1; i < 10; i++) {
+      pathOut.append(Symbol.PATH).append(i);
+    }
+
+    FileUtils.checkAndMakeDir(pathOut.toString());
+    FileUtils.cleanDirAll(path);
+
+    Assert.assertEquals(false, new File(path).exists());
+  }
 }

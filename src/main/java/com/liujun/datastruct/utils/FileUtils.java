@@ -265,4 +265,47 @@ public class FileUtils {
       e.printStackTrace();
     }
   }
+
+  /**
+   * 清理目录下所有文件
+   *
+   * @param filePath 文件路径
+   */
+  public static void cleanDirAll(String filePath) {
+    File dataFile = new File(filePath);
+
+    // 执行递归的文件清理操作
+    cleanDirCycle(dataFile, 0);
+  }
+
+  /**
+   * 递归执行文件的删除操作
+   *
+   * @param dataFile 文件信息
+   * @param maxDeep 当前深度
+   */
+  private static void cleanDirCycle(File dataFile, int maxDeep) {
+    if (maxDeep > 20) {
+      return;
+    }
+
+    if (dataFile.isDirectory()) {
+      for (File fileItem : dataFile.listFiles()) {
+        if (fileItem.isDirectory()) {
+          cleanDirCycle(fileItem, maxDeep + 1);
+        }
+        // 为文件时执行删除操作
+        else if (fileItem.isFile()) {
+          fileItem.delete();
+        }
+      }
+
+      // 完成后清理本文件
+      dataFile.delete();
+    }
+    // 删除文件
+    else if (dataFile.isFile()) {
+      dataFile.delete();
+    }
+  }
 }

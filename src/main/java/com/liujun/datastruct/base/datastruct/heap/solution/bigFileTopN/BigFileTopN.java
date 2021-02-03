@@ -1,6 +1,6 @@
 package com.liujun.datastruct.base.datastruct.heap.solution.bigFileTopN;
 
-import com.liujun.datastruct.base.datastruct.hash.ConsistentHashing.HashCode;
+import com.liujun.datastruct.base.datastruct.hash.consistenthash.old.HashCode;
 import com.liujun.datastruct.base.datastruct.heap.solution.bigFileTopN.pojo.KeyBusi;
 import com.liujun.datastruct.base.datastruct.heap.solution.bigFileTopN.pojo.PartitionBusi;
 import com.liujun.datastruct.utils.IOUtils;

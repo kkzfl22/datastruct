@@ -1,6 +1,6 @@
 package com.liujun.datastruct.base.sort.bigdataSort.mergeSort;
 
-import com.liujun.datastruct.advanced.bloomfilter.datacompare.bigfilecompare.constant.CompareConfig;
+import com.liujun.datastruct.datacompare.bigfilecompare.constant.CompareConfig;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
