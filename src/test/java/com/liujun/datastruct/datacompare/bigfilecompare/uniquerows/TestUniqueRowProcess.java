@@ -29,7 +29,7 @@ public class TestUniqueRowProcess {
     FileUtils.checkAndMakeDir(output);
 
     try {
-      instance.uniqueRows(src, output, TestBigFileCompare.getDataParse(), FileDataEntity.class);
+      instance.uniqueRows(src, output, TestBigFileCompare.getDataParse());
       List<String> dataList = FileUtils.readTop(output + "/merge-repetition-0.txt", 10);
 
       Assert.assertEquals(dataList.get(0), "0,0,1,2,3,8");

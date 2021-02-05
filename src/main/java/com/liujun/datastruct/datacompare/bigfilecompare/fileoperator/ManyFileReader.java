@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ManyFileReader implements AutoCloseable {
 
-  /** 每次读取512条记录 */
+  /** 每次读取0124条记录 */
   private static final int BATCH_READ_LIST = 1024;
 
   /** 基础的文件路径 */

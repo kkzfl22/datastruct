@@ -1,5 +1,7 @@
 package com.liujun.datastruct.datacompare.bigfilecompare.threadpool;
 
+import com.config.Symbol;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -18,7 +20,6 @@ public class ScheduleTaskThreadPool {
 
   /** 进行任务调度的线程池对象 */
   public static final ScheduleTaskThreadPool INSTANCE = new ScheduleTaskThreadPool();
-
 
   /**
    * 线程池中的核心线程数，当提交一个任务时，线程池创建一个新线程执行任务，直到当前线程数等于corePoolSize；
@@ -42,12 +43,11 @@ public class ScheduleTaskThreadPool {
   private static final int WAIT_NUM = 8;
 
   /**
-   * 线程空闲时的存活时间，即当线程没有任务执行时，继续存活的时间。以纳秒为单位
+   * 线程空闲时的存活时间，即当线程没有任务执行时，继续存活的时间。以秒为单位
    *
    * <p>默认情况下，该参数只在线程数大于corePoolSize时才有用
    */
-  private static final int KEEPALIVE = 32;
-
+  private static final int KEEPALIVE = 5;
 
   /**
    * workQueue必须是BlockingQueue阻塞队列。当线程池中的线程数超过它的corePoolSize的时候，
@@ -89,7 +89,7 @@ public class ScheduleTaskThreadPool {
           TimeUnit.SECONDS,
           queue,
           factory,
-          new ThreadPoolExecutor.CallerRunsPolicy());
+          new ThreadPoolExecutor.AbortPolicy());
 
   /**
    * 提交带返回值的线程给线程池来运行
@@ -107,6 +107,30 @@ public class ScheduleTaskThreadPool {
    */
   public Future<?> submit(Runnable task) {
     return pool.submit(task);
+  }
+
+  /**
+   * 当前否为线程池已经满载
+   *
+   * @return
+   */
+  public boolean isFull() {
+    return pool.getPoolSize() == pool.getMaximumPoolSize();
+  }
+
+  public void outPoolInfo() {
+    StringBuilder outData = new StringBuilder();
+    outData.append("pool Core Size:").append(pool.getCorePoolSize()).append(",");
+    outData.append("curr pool size:").append(pool.getPoolSize()).append(",");
+    outData.append("max pool Size:").append(pool.getMaximumPoolSize()).append(",");
+    outData.append("queue size:").append(pool.getQueue().size()).append(",");
+    outData.append("task completed size:").append(pool.getCompletedTaskCount()).append(",");
+    outData.append("active count size:").append(pool.getActiveCount()).append(",");
+    outData.append("task count size:").append(pool.getTaskCount()).append(",");
+    outData.append(Symbol.LINE);
+    outData.append(Symbol.LINE);
+
+    System.out.println(outData.toString());
   }
 
   public void shutdown() {

@@ -32,7 +32,7 @@ public class UniqueRowProcess {
    * @param path
    */
   public <V> String uniqueRows(
-          String path, String outPath, DataParseInf<V> dataParse, Class dataClass) {
+          String path, String outPath, DataParseInf<V> dataParse) {
 
     String outDataPath = outPath + Symbol.PATH + UNIQUE_DATA_OUT_PATH;
     FileUtils.checkAndMakeDir(outDataPath);

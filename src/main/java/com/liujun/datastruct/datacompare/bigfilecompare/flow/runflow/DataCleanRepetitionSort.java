@@ -36,18 +36,15 @@ public class DataCleanRepetitionSort implements FlowInf {
     // 对比的转换函数
     DataParseInf dataParse =
         (DataParseInf) context.get(CompareKeyEnum.INPUT_COMPARE_PARSE.getKey());
-    // 对比数据的行的实体信息
-    Class dataEntity = (Class) context.get(CompareKeyEnum.INPUT_COMPARE_ENTITY_CLASS.getKey());
 
     // 1,针对原始数据去重操作
     String outSrcPath = inputEntity.getCompareOutPath() + Symbol.PATH + SRC_PATH_FLAG;
-    String srcPath =
-        rowProcess.uniqueRows(inputEntity.getSrcPath(), outSrcPath, dataParse, dataEntity);
+    String srcPath = rowProcess.uniqueRows(inputEntity.getSrcPath(), outSrcPath, dataParse);
 
     // 对目标数据执行去重操作
     String outTargetPath = inputEntity.getCompareOutPath() + Symbol.PATH + TARGET_PATH_FLAG;
     String targetPath =
-        rowProcess.uniqueRows(inputEntity.getTargetPath(), outTargetPath, dataParse, dataEntity);
+        rowProcess.uniqueRows(inputEntity.getTargetPath(), outTargetPath, dataParse);
 
     // 原始数据去除重复的行
     context.put(CompareKeyEnum.PROC_REMOVE_DUPLICATE_OUTPUT_SRC.getKey(), srcPath);

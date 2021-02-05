@@ -32,7 +32,7 @@ public class FileTaskCompare {
    * @param runMethod 运行函数
    */
   public static <V> void readerDataProc(
-          ManyFileReader reader, DataParseInf<V> dataParse, Consumer<List<V>> runMethod) {
+      ManyFileReader reader, DataParseInf<V> dataParse, Consumer<List<V>> runMethod) {
 
     // 统计计数器
     DataStatistics statistics = new DataStatistics(INCREMENT_PRINT);
@@ -61,10 +61,10 @@ public class FileTaskCompare {
           item.get();
         }
         // 否则可直接加入到队列中
-        else {
-          // 将数据加入队列尾部
-          rsp.add(future);
-        }
+
+        // 将数据加入队列尾部
+        rsp.add(future);
+
         // 统计操作
         statistics.dataAdd(dataList.size());
       }

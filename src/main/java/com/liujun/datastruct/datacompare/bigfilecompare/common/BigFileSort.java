@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
@@ -26,9 +27,6 @@ import java.util.concurrent.Future;
  * @version 0.0.1
  */
 public class BigFileSort<V> {
-
-  /** 最大等待数量 */
-  private static final int QUEUE_WAIT_NUM = 16;
 
   /** 文件转换接口 */
   private final DataParseInf<V> dataParse;
@@ -113,35 +111,44 @@ public class BigFileSort<V> {
    * @param dataList 文件列表
    */
   protected void fileSoft(File[] dataList) {
-    ConcurrentLinkedQueue<Future> rsp = new ConcurrentLinkedQueue<>();
+
+    System.out.println("开始执行线程池任务，信息输出");
+    ScheduleTaskThreadPool.INSTANCE.outPoolInfo();
+
+    LinkedList<Future> rsp = new LinkedList<>();
     try {
       for (File fileItem : dataList) {
         // 异步调用数据处理
         Future<?> future = this.runTask(fileItem);
+        // 将数据加入队列尾部
+        rsp.add(future);
         // 统计计数
         dataStatistics.dataAdd(1);
-        // 当超过队列大小后则，必须待最前一个完成。
-        if (rsp.size() > QUEUE_WAIT_NUM) {
+
+        // 优先检查线程池是否已经满载
+        if (ScheduleTaskThreadPool.INSTANCE.isFull()) {
           // 获取并移除队列的头
           Future item = rsp.poll();
           // 由于此处单个任务失败，不能影响其他的，需要单个异常处理，流程继续
           try {
-            item.get();
+            Object value = item.get();
+            // 打印任务信息
+            System.out.println("用时:" + value);
+            ScheduleTaskThreadPool.INSTANCE.outPoolInfo();
+
           } catch (InterruptedException e) {
             e.printStackTrace();
           } catch (ExecutionException e) {
             e.printStackTrace();
           }
         }
-        // 否则可直接加入到队列中
-        else {
-          // 将数据加入队列尾部
-          rsp.add(future);
-        }
       }
       // 必须所有都完成
       for (Future item : rsp) {
-        item.get();
+        Object value = item.get();
+        // 打印任务信息
+        System.out.println("用时:" + value);
+        ScheduleTaskThreadPool.INSTANCE.outPoolInfo();
       }
 
     } catch (Exception e) {
@@ -160,6 +167,7 @@ public class BigFileSort<V> {
     Future<?> future =
         ScheduleTaskThreadPool.INSTANCE.submit(
             () -> {
+              long startTime = System.currentTimeMillis();
               // 将文件转换为集合
               List oneFileList = this.fileToList(fileItem);
 
@@ -169,6 +177,9 @@ public class BigFileSort<V> {
               // QuickSort.quickSortList(oneFileList);
               // 再输出至文件中
               this.listToFile(oneFileList, fileItem);
+
+              long endTime = System.currentTimeMillis();
+              return endTime - startTime;
             });
 
     return future;
