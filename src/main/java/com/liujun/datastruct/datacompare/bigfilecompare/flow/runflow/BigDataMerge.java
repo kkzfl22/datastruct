@@ -115,13 +115,17 @@ public class BigDataMerge<V> implements FlowInf {
           else {
             // 数据比较后的结果
             int compareRsp = ((Comparable) srcMinData).compareTo(targetMinData);
-            // 说明原始数据，小于目标数据,则为删除操作,将原始数据写入至删除中，原始读取下一个
-            if (compareRsp == -1) {
+            // 说明原始数据，小于目标数据,则为删除操作,
+            // 解释下为什么 是删除操作，删除原始数据小于目标数据，这说明在原始数据中存在，在目标数据是不存在，这就是删除数据
+            // 完成添加后，将原始数据写入至删除中，原始读取下一个
+            if (compareRsp < 0) {
               dataRsp.getDeleteList().add(dataParse.toFileLine(srcMinData));
               srcMinData = mergeSrcFileOperator.readerMin();
             }
-            // 如果原始数据大于目标数据，说明为添加操作，将目标数据写入至添加中，读取下一个
-            else if (compareRsp == 1) {
+            // 如果原始数据大于目标数据，说明为添加操作，
+            // 这明也解释下为什么是添加操作，原始数据大于目标数据，说明在原始中不存，在目标数据中存在，这就是添加数据
+            // 写入完成后，需将目标数据写入至添加中，读取下一个
+            else if (compareRsp > 0) {
               dataRsp.getAddList().add(dataParse.toFileLine(targetMinData));
               targetMinData = mergeTargetFileOperator.readerMin();
             }

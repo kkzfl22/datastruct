@@ -4,7 +4,6 @@ import com.liujun.datastruct.datacompare.bigfilecompare.FileDataEntity;
 import com.liujun.datastruct.datacompare.bigfilecompare.FileDataTimeStampEntity;
 import com.liujun.datastruct.datacompare.bigfilecompare.TestBigFileCompare;
 import com.liujun.datastruct.datacompare.bigfilecompare.compare.DataParseInf;
-import com.liujun.datastruct.datacompare.bigfilecompare.merge.MergeData;
 import com.liujun.datastruct.utils.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
