@@ -1,6 +1,5 @@
 package com.liujun.datastruct.base.datastruct.hash.consistenthash;
 
-import com.config.Symbol;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
@@ -11,15 +10,14 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 一致性hash算法
+ * 一致性hash算法，使用默认的最式节点
+ *
+ * <p>这是手动指定默认的节点，但是如果忘记指定了，会造成获取不到服务器节点的情况
  *
  * @author liujun
  * @version 0.0.1
  */
-public class ConsistentHash {
-
-  /** 用来存储当前的节点信息 */
-  private static final Map<String, Integer> DATA_MAP = new ConcurrentHashMap<>();
+public class ConsistentHashDefault {
 
   /** 用于记录当前一致性hasp的节点信息 */
   private static final SortedMap<Integer, String> SORT_MAP = new TreeMap<>();
@@ -31,7 +29,6 @@ public class ConsistentHash {
    */
   public void addNode(String dataServerIp) {
     int hashCode = Hashing.murmur3_32().hashString(dataServerIp, StandardCharsets.UTF_8).asInt();
-    DATA_MAP.put(dataServerIp, hashCode);
     SORT_MAP.put(hashCode, dataServerIp);
   }
 
@@ -50,37 +47,24 @@ public class ConsistentHash {
    * @param serviceIp
    */
   public void dataDown(String serviceIp) {
-    Integer hashCode = DATA_MAP.get(serviceIp);
-
-    if (null != hashCode) {
-      DATA_MAP.remove(serviceIp);
-      // 下线节点
-      SORT_MAP.remove(hashCode);
-      // 检查下线节点是否为默认节点,如果是，则需要替换节点
-      String dataIp = SORT_MAP.get(Integer.MAX_VALUE);
-      if (serviceIp.equals(dataIp)) {
-        Iterator<Map.Entry<String, Integer>> dataIter = DATA_MAP.entrySet().iterator();
-        while (dataIter.hasNext()) {
-          Map.Entry<String, Integer> dataValue = dataIter.next();
-
-          if (!serviceIp.equals(dataValue.getKey())) {
-            SORT_MAP.put(Integer.MAX_VALUE, dataValue.getKey());
-          }
-        }
-      } else {
-        SORT_MAP.remove(hashCode);
-      }
+    int hashCode = Hashing.murmur3_32().hashString(serviceIp, StandardCharsets.UTF_8).asInt();
+    // 下线节点
+    SORT_MAP.remove(hashCode);
+    // 检查下线节点是否为默认节点,如果是，也需要下线操作
+    String dataIp = SORT_MAP.get(Integer.MAX_VALUE);
+    if (serviceIp.equals(dataIp)) {
+      SORT_MAP.remove(Integer.MAX_VALUE);
     }
   }
 
   /**
    * 获取客户端的节点信息
    *
-   * @param clientIp
+   * @param key key的信息
    * @return
    */
-  public String getNode(String clientIp) {
-    int hashCode = Hashing.murmur3_32().hashString(clientIp, StandardCharsets.UTF_8).asInt();
+  public String getNode(String key) {
+    int hashCode = Hashing.murmur3_32().hashString(key, StandardCharsets.UTF_8).asInt();
     SortedMap<Integer, String> dataNode = SORT_MAP.tailMap(hashCode);
     return dataNode.get(dataNode.firstKey());
   }

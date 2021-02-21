@@ -31,7 +31,7 @@ public class TestMergeData {
     try {
       DataParseInf<FileDataTimeStampEntity> parse = TestBigFileCompare.getDataParse();
 
-      MergeData instance = new MergeData(FileDataEntity.class, src, target, parse);
+      // MergeData instance = new MergeData(FileDataEntity.class, src, target, parse);
       // instance.merge();
 
       List<String> dataList = FileUtils.readTop(target + "/merge-repetition-0.txt", 90);
