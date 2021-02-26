@@ -43,6 +43,15 @@ public class FileUtils {
   }
 
   /**
+   * 获取基础的路径
+   *
+   * @return 路径信息
+   */
+  public static String getBasePath() {
+    return FileUtils.class.getClassLoader().getResource(".").getPath();
+  }
+
+  /**
    * 执行文件的删除操作
    *
    * @param path 路径信息

@@ -8,7 +8,7 @@ import org.junit.Test;
  * @version 0.0.1
  * @date 2019/07/26
  */
-public class TestMajoritySolution3 {
+public class TestMajoritySolutionTop1 {
 
   @Test
   public void testMajority() {

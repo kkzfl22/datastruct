@@ -95,4 +95,11 @@ public class TestFileUtils {
 
     Assert.assertEquals(false, new File(path).exists());
   }
+
+  @Test
+  public void testGetPath() {
+    String getPath = FileUtils.getBasePath();
+    System.out.println(getPath);
+    Assert.assertNotNull(getPath);
+  }
 }
