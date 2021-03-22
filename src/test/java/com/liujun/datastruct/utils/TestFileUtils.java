@@ -1,6 +1,7 @@
 package com.liujun.datastruct.utils;
 
 import com.config.Symbol;
+import com.google.common.reflect.TypeToken;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,6 +79,40 @@ public class TestFileUtils {
 
     int index = Integer.parseInt(indexStr);
     Assert.assertEquals(index, 12);
+  }
+
+  @Test
+  public void readList() {
+    String path = this.getClass().getClassLoader().getResource(".").getPath();
+    String fileName = path + Symbol.PATH + "struct/leetcode/249/target1.txt";
+    List<List<String>> dataList = FileUtils.readList(fileName);
+    Assert.assertNotNull(dataList);
+  }
+
+  @Test
+  public void readArray() {
+    String path = this.getClass().getClassLoader().getResource(".").getPath();
+    String fileName = path + Symbol.PATH + "struct/leetcode/249/data1.txt";
+    String[] dataList = FileUtils.readArray(fileName);
+    Assert.assertNotNull(dataList);
+  }
+
+  @Test
+  public void readJonToObject() {
+    String path = this.getClass().getClassLoader().getResource(".").getPath();
+    String fileName = path + Symbol.PATH + "struct/leetcode/036/data1.json";
+    List<List<Character>> dataList =
+        FileUtils.readJsonToObject(fileName, new TypeToken<List<List<Character>>>() {}.getType());
+
+    char[][] dataItem = new char[dataList.size()][];
+    for (int i = 0; i < dataList.size(); i++) {
+      dataItem[i] = new char[dataList.get(i).size()];
+      for (int j = 0; j < dataList.get(i).size(); j++) {
+        dataItem[i][j] = dataList.get(i).get(j);
+      }
+    }
+
+
   }
 
   @Test

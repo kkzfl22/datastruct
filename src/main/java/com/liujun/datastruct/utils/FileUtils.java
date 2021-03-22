@@ -1,7 +1,10 @@
 package com.liujun.datastruct.utils;
 
 import com.config.Symbol;
+import com.google.common.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.ietf.jgss.GSSContext;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,9 +13,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+
+import com.google.gson.Gson;
 
 /**
  * 公共的文件夹创建
@@ -24,6 +31,8 @@ public class FileUtils {
 
   /** 小文件的标识 */
   private static final long LITTLE_SIZE = 1 * 1024 * 1024;
+
+  private static final Gson gsonInstance = new Gson();
 
   /**
    * 文件的检查创建操作
@@ -103,6 +112,57 @@ public class FileUtils {
       return dataLine.toString();
     }
     return Symbol.EMPTY;
+  }
+
+  /**
+   * 获取数组
+   *
+   * @param path 路径信息
+   * @return 集合信息
+   */
+  public static String[] readArray(String path) {
+    String dataValue = readLittleFile(path);
+
+    if (StringUtils.isEmpty(dataValue)) {
+      return new String[0];
+    }
+
+    List<String> dataList =
+        gsonInstance.fromJson(dataValue, new TypeToken<List<String>>() {}.getType());
+
+    return dataList.toArray(new String[0]);
+  }
+
+  /**
+   * 获取数组
+   *
+   * @param path 路径信息
+   * @return 集合信息
+   */
+  public static List<List<String>> readList(String path) {
+    String dataValue = readLittleFile(path);
+
+    if (StringUtils.isEmpty(dataValue)) {
+      return Collections.emptyList();
+    }
+
+    return gsonInstance.fromJson(dataValue, new TypeToken<List<List<String>>>() {}.getType());
+  }
+
+  /**
+   * 读取二维数组
+   *
+   * @param path 路径信息
+   * @return 集合信息
+   */
+  public static <T> T readJsonToObject(String path, Type type) {
+    String dataValue = readLittleFile(path);
+
+    if (StringUtils.isEmpty(dataValue)) {
+      return null;
+    }
+
+    return gsonInstance.fromJson(dataValue, type);
   }
 
   /**
