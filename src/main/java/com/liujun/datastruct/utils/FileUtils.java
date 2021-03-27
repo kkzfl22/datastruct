@@ -88,6 +88,16 @@ public class FileUtils {
   }
 
   /**
+   * 读取资源路径下的文件
+   *
+   * @param path
+   * @return
+   */
+  public static String readClassPathLittleFile(String path) {
+    return readLittleFile(getBasePath() + path);
+  }
+
+  /**
    * 读取小文件的内容
    *
    * @param path
