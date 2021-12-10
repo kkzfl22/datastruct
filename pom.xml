@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <slf4j.version>1.7.21</slf4j.version>
-        <log4j.version>2.11.0</log4j.version>
+        <log4j.version>2.15.0</log4j.version>
     </properties>
 
 
