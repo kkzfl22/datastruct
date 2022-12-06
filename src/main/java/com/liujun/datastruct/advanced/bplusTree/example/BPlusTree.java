@@ -1,4 +1,4 @@
-package com.liujun.datastruct.advanced.bplusTree;
+package com.liujun.datastruct.advanced.bplusTree.example;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

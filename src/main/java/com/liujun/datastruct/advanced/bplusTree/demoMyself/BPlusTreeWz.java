@@ -1,4 +1,4 @@
-package com.liujun.datastruct.advanced.bplusTree;
+package com.liujun.datastruct.advanced.bplusTree.demoMyself;
 
 import com.liujun.datastruct.utils.UnsafeInstance;
 import sun.misc.Unsafe;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * @version 0.0.1
  * @date 2019/01/20
  */
-public class BPlusTreeDemo {
+public class BPlusTreeWz {
 
   /** 根节点 */
   private BplusTreeLeafNode root;
@@ -71,9 +71,6 @@ public class BPlusTreeDemo {
   public static void main(String[] args) {
 
     System.out.println(UnsafeInstance.UNSAFEINSTANCE.pageSize());
-    System.out.println(UnsafeInstance.UNSAFEINSTANCE.pageSize());
-    System.out.println(UnsafeInstance.UNSAFEINSTANCE.pageSize());
-    System.out.println(UnsafeInstance.UNSAFEINSTANCE.pageSize());
 
     Field[] fields = BplusTreeLeafNode.class.getDeclaredFields();
 
@@ -93,7 +90,7 @@ public class BPlusTreeDemo {
 
     for (Field field : fields) {
       System.out.println(field.getName());
-      System.out.println(field.getName() + "---offSet:" + UNSAFE.objectFieldOffset(field));
+      // System.out.println(field.getName() + "---offSet:" + UNSAFE.objectFieldOffset(field));
     }
   }
 }
